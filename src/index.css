@@ -1,0 +1,31 @@
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&display=swap');
+
+*{
+  margin: 0;
+  padding: 0;
+  font-family: sans-serif;
+}
+
+
+.layout{
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  position: relative;
+}
+.SideBar{
+  width: 93px;
+  position: fixed;
+  height: 100vh;
+  top: 0;
+  left: 0;
+  z-index: 10;
+  background: #FFFDFB;
+}
+.children{
+  width: 95%;
+}
+
+.SideBar:hover .children {
+  background: rgba(255, 253, 251, 0.3);
+}

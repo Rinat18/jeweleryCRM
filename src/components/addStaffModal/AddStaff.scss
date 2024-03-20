@@ -1,0 +1,90 @@
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* Полупрозрачный фон */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 11;
+  }
+  
+  .modal {
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); /* Тень для модального окна */
+    width: 50%; /* Максимальная ширина модального окна */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .close {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    cursor: pointer;
+    font-size: 20px;
+  }
+  
+  h2 {
+  }
+  
+  form label {
+    margin-bottom: 10px; /* Отступ между элементами формы */
+    color: #6E6C6A;
+    font-weight: 500;
+    font-family: Manrope;
+    font-size: 12px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  form{
+    display: flex;
+    margin-top: 30px;
+    width: 80%;
+    justify-content: space-between;
+
+  }
+  
+  form > div{
+    display: flex;
+    flex-direction: column;
+    width: 47%;
+  }
+
+  form input {
+    width: 100%;
+    padding: 8px;
+    background: #F6F6F6;
+    border-radius: 100px;
+    margin-bottom: 10px;
+    height: 43px;
+    margin-top: 5px;
+    border: 1px solid #ccc;
+    box-sizing: border-box; /* Учитываем отступы и границу в общую ширину */
+  }
+  
+  button {
+    height: 40px;
+    background-color: #576ED0;
+    color: #fff;
+    border: none;
+    margin-top: 40px;
+    border-radius: 100px;
+    cursor: pointer;
+    width: 40%;
+    font-weight: 600;
+    font-size: 16px;
+
+  }
+  
+  button:hover {
+    background-color: #0056b3; /* Цвет кнопки при наведении */
+  }
+  

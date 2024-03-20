@@ -1,0 +1,60 @@
+.Staff__filtration{
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 20px;
+    &_select{
+        display: flex;
+        &_select1{
+            width: 110px;
+            border: 1px solid #6E6C6A;
+            color: #6E6C6A;
+            font-size: 16px;
+            font-weight: 700;
+            font-family: Manrope;
+            height: 40px;
+            border-radius: 100px;
+            display: flex;
+            padding: 5px 10px;
+            padding-right: 10px;
+
+        }
+        &_select2{
+            width: 140px;
+            margin-left: 20px;
+            border: 1px solid #6E6C6A;
+            color: #6E6C6A;
+            font-size: 16px;
+            font-weight: 700;
+            font-family: Manrope;
+            height: 40px;
+            border-radius: 100px;
+            display: flex;
+            padding: 5px 10px;
+            padding-right: 10px;
+        }
+    }
+    &__input{
+        display: flex;
+        align-items: center;
+        position: relative;
+
+        &_img{
+            position: absolute;
+            z-index: 1;
+            left: 14px;
+        }
+        &_input{
+            width: 250px;
+            border: 1px solid #CED0D2;
+            height: 40px;
+            border-radius: 100px;
+            color: #CED0D2;
+            padding-left: 40px;
+            font-family: Manrope;
+            font-weight: 500;
+            font-size: 16px;
+        }
+    }
+}

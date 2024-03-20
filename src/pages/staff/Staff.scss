@@ -1,0 +1,141 @@
+.Staff {
+
+    // .Staff__container
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    background: #FFFDFB;
+    height: 100vh;
+
+    &__container {
+        width: 96%;
+        display: flex;
+        flex-direction: column;
+        margin-top: 60px;
+    }
+    
+    // .Staff__title
+
+    &__title {
+        display: flex;
+        width: 100%;
+        justify-content: space-between;
+        // .Staff__title_Text
+
+        &_Text {
+            font-weight: 800;
+            font-size: 42px;
+            font-family: Manrope
+        }
+
+        // .Staff__title_btn
+
+        &_btn {
+            background: #576ED0;
+            width: 224px;
+            height: 48px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            color: #FFFF;
+            border-radius: 100px;
+            cursor: pointer;
+            img{
+                margin-right: 5px;
+            }
+        }
+    }
+
+    &__table{
+        margin-top: 30px;
+    }
+
+    &__pagination{
+        margin-top: 30px;
+        display: flex;
+        width: 100%;
+        justify-content: space-between;
+        &_paginations{
+            
+        }
+        &__page{
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            &__text{
+                font-weight: 500;
+                font-size: 12px;
+            }
+            &_number{
+                width: 29px;
+                height: 27px;
+                border: 1px solid black;
+                border-radius: 4px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                margin-top: 10px;
+            }
+        }
+    }
+
+}
+
+
+
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* Полупрозрачный фон */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 11;
+  }
+  
+  .modal {
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); /* Тень для модального окна */
+    width: 50%; /* Максимальная ширина модального окна */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  
+  button {
+    height: 40px;
+    background-color: #576ED0;
+    color: #fff;
+    border: none;
+    margin-top: 40px;
+    border-radius: 100px;
+    cursor: pointer;
+    width: 40%;
+    font-weight: 600;
+    font-size: 16px;
+
+  }
+  
+  button:hover {
+    background-color: #0056b3; /* Цвет кнопки при наведении */
+  }
+  
+  .btns{
+    display: flex;
+    width: 60%;
+    justify-content: space-between;
+  }
+
+  .btns button:first-child{
+    background-color: #fff;
+    border: 2px solid #576ED0;
+    color: #576ED0;
+}

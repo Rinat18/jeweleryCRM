@@ -1,0 +1,290 @@
+.HomePage{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    background: #FFFDFB;
+    height: 100vh;
+}
+
+.HomePage__container{
+    width: 96%;
+    display: flex;
+    flex-direction: column;
+    margin-top: 60px;
+}
+
+.HomePage__container__title{
+    font-weight: 800;
+    font-size: 42px;
+    font-family: Manrope;
+}
+
+.HomePage__container__cash {
+    display: flex;
+    margin-top: 30px;
+}
+
+.HomePage__container__cash__nal {
+    width: 20%;
+    background: #FFFFFF;
+    box-shadow: 0px 0px 4px 0px #5F5B5B26;
+    border-radius: 10px;
+    display: flex;
+    padding: 24px 14px 14px 14px;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.HomePage__container__cash__nal__soms {
+    display: flex;
+    width: 100%;
+    border-bottom: 2px solid  #576ED0;
+    padding-bottom: 10px;
+    align-items: center;
+}
+
+.HomePage__container__cash__nal__soms__text {
+    font-weight: 600;
+    font-size: 18px;
+    font-family: Manrope;
+}
+
+.HomePage__container__cash__nal__soms__numbers{
+    font-weight: 700;
+    font-size: 26px;
+    font-family: Manrope;
+    margin-left: 28%;
+} 
+
+.HomePage__container__cash__nal__btn{
+    width: 90%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #576ED0;
+    color: #fff;
+    height: 50px;
+    border-radius: 100px;
+} 
+
+.HomePage__container__cash__cards {
+    width: 60%;
+    background: #FFFFFF;
+    box-shadow: 0px 0px 4px 0px #5F5B5B26;
+    border-radius: 10px;
+    display: flex;
+    padding: 24px 14px 14px 14px;
+    flex-direction: column;
+    align-items: center;
+    margin-left: 30px;
+}
+
+.numbers2{
+    margin-left: 30px;
+}
+.HomePage__container__cash__cards__banks {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    margin-top: 50px;
+}
+
+.HomePage__container__cash__cards__banks__optima {
+    display: flex;
+    flex-direction: column;
+    width: 24%;
+}
+
+.HomePage__container__cash__cards__banks__optima__text {
+    font-weight: 500;
+    font-size: 18px;
+    font-family: Manrope;
+}
+
+.HomePage__container__cash__cards__banks__optima__numbers{
+    font-weight: 600;
+    font-size: 22px;
+    font-family: Manrope;
+    margin-top: 10px;
+}
+.HomePage__container__cash__nal__btn2{
+    margin-top: 10px;
+    height: 50px;
+}
+
+
+// ! STATISTIK
+
+.HomePage__container__title__Statistik {
+    font-weight: 700;
+    font-size: 28px;
+    font-family: Manrope;
+    margin-top: 100px;
+}
+
+.HomePage__container__statistik{
+    display: flex;
+    margin-top: 40px;
+}
+
+.HomePage__container__statistik__solds{
+    width: 20%;
+    background: #FFFFFF;
+    box-shadow: 0px 0px 4px 0px #5F5B5B26;
+    padding: 24px 31px 24px 31px;
+    border-radius: 10px;
+    margin-right: 30px;
+}
+
+.HomePage__container__statistik__solds__title {
+    color: #576ED0;
+    font-weight: 600;
+    font-size: 19px;
+    border-bottom: 2px solid #576ED0;
+    padding-bottom: 10px;
+    font-family: Manrope;
+}
+
+.HomePage__container__statistik__solds__numbers{
+    display: flex;
+    justify-content: space-between;
+    margin-top: 30px;
+}
+
+
+.HomePage__container__statistik__numbers__solds{
+    display: flex;
+    flex-direction: column;
+}
+
+.HomePage__container__statistik__numbers__solds__numbers{
+    color: #3E3C3A;
+    font-weight: 700;
+    font-size: 26px;
+} 
+
+.HomePage__container__statistik__numbers__solds__text{
+    color: #3E3C3A;
+    font-size: 14px;
+    margin-top: 5px;
+    font-family: Manrope;
+
+}
+
+.HomePage__container__statistik__numbers__cash{
+    display: flex;
+    flex-direction: column;
+}
+
+.HomePage__container__statistik__numbers__cash__soms{
+    color: #3E3C3A;
+    font-weight: 700;
+    font-size: 26px;
+}
+
+.HomePage__container__statistik__numbers__cash__text {
+    color: #3E3C3A;
+    font-size: 14px;
+    margin-top: 5px;
+    font-family: Manrope;
+
+}
+
+.HomePage__container__statistik__solds__dates {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 30px;
+}
+
+.HomePage__container__statistik__solds__dates__date {
+    color: #CED0D2;
+    font-weight: 600;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    font-family: Manrope;
+    position: relative;
+}
+.HomePage__container__statistik__solds__dates__date img{
+    margin-left: 5px;
+}
+
+.HomePage__container__statistik__solds__dates__category {
+    border: none; /* Граница */
+    border-radius: 5px; /* Скругление углов */
+    color: #CED0D2;
+    font-weight: 600;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    text-align: center;
+    font-family: Manrope;
+}
+  
+.HomePage__container__statistik__solds__dates__category option {
+    font-family: Manrope;
+    color: #2A2826;
+
+}
+  
+.HomePage__container__statistik__solds__dates__category:focus {
+    outline: none; /* Убрать обводку при фокусе */
+    /* Дополнительные стили при фокусе */
+}
+/* Убираем изменение фона при наведении на стрелку */
+.HomePage__container__statistik__solds__dates__category::-webkit-outer-spin-button,
+.HomePage__container__statistik__solds__dates__category::-webkit-inner-spin-button {
+    background-color: none;
+}
+/* Стили для фона модального окна */
+
+  
+  /* Стили для самого модального окна */
+  .modal {
+    position: absolute;
+    background-color: white;
+    display: flex;
+    padding: 20px;
+    top: 45px;
+    border-radius: 5px;
+    box-shadow: 0px 0px 10px 0px #273D791A;
+    align-items: center;
+  }
+  
+  .modal__text{
+    font-weight: 500;
+    font-size: 16px;
+    color: #2A2826;
+    margin-left: 5px;
+  }
+  .modal__input{
+    margin-left: 10px;
+    margin-right: 10px;
+    width: 105px;
+    height: 30px;
+    border-radius: 100px;
+    border: 1px solid #CED0D2;
+    padding-left: 10px;
+}
+.modal__btn{
+    width: 105px;
+    height: 30px;
+    border-radius: 100px;
+    border: none;
+    background: #576ED0;
+    color: #ffff;
+    font-weight: 500;
+    font-size: 12px;
+    font-family: Manrope;
+}
+
+.HomePage__container__statistik__solds__dates__category2{
+    margin-left: 10px;
+}
+
+  
+
+
+  
+  
