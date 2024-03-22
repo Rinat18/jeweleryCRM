@@ -12,27 +12,27 @@ import search from "../../images/search-sm.png";
 import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
 import "../staff/Staff.scss";
-import "./ProductPage.scss";
+import "../product/ProductPage.scss";
 import { useProduct } from "../../context/ProductContext";
 import AddProductModal from "../../components/addProductModal/AddProductModal";
 import { useNavigate } from "react-router-dom";
+import { useClient } from "../../context/ClientContext";
 
-export default function ProductPage() {
+export default function Client() {
   const { products, getProducts, getCategories, getOneProduct } = useProduct();
-
+  const { getClients, clients } = useClient();
   useEffect(() => {
-    getProducts(page);
-    getCategories();
+    getClients(page);
   }, []);
 
-  console.log(products);
+  console.log(clients);
   // ! HOOKS
   const [page, setPage] = useState(1);
   const [isOpen, setIsopen] = useState(false);
   const [isOpen2, setIsopen2] = useState(false);
   const [isOpen3, setIsopen3] = useState(false);
 
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   // !PAGINATION
   const tables = [1, 2, 3, 4];
   const itemPerPage = 1;
@@ -48,54 +48,45 @@ export default function ProductPage() {
   // !FUNCTIONS
   const staffs = [1];
   function createData(
-    code,
-    title,
-    category,
-    proba,
-    images,
-    weight,
-    size,
-    cost,
-    used,
-    nalichii,
+    name,
+    address,
+    phone,
+    img,
+    description,
+    payment,
+    inn,
     action
   ) {
     return {
-      code,
-      title,
-      category,
-      proba,
-      images,
-      weight,
-      size,
-      cost,
-      used,
-      nalichii,
+      name,
+      address,
+      phone,
+      img,
+      description,
+      payment,
+      inn,
       action,
     };
   }
-  
-  const rows = products.map((elem) =>
+
+  const rows = clients.map((elem) =>
     createData(
-      elem.barcode ? elem.barcode : "Без баркода",
-      elem.title ? elem.title : "Без название",
-      elem.category.name ? elem.category.name : "Без категроии",
-      elem.sample_number ? elem.sample_number : "Без пробы",
-      elem.images ? elem.images : "Без фотографии",
-      elem.weight ? elem.weight : "Без весса",
-      elem.size ? elem.size : "Без размера",
-      elem.cost_price ? elem.cost_price : "0",
-      elem.in_stock ? "новый" : "б/у",
-      elem.used ? "есть" : "нету",
+      elem.name ? elem.name : "Без Имени",
+      elem.address ? elem.address : "Без Адресса",
+      elem.phone ? elem.phone : "Без Номера",
+      elem.image ? elem.image : "Без Фото",
+      elem.note ? elem.note : "Без Описания",
+      elem.solvency ? elem.solvency : "Без данных",
+      elem.inn ? elem.inn : "Без данных",
       <>
         <img src={Eye} onClick={() => getOnePage(elem.id)} alt="" />
       </>
     )
   );
   console.log(rows);
-      const getOnePage = (id) => {
-        navigate(`/detail/${id}`)
-      }
+  const getOnePage = (id) => {
+    navigate(`/detail/${id}`);
+  };
   const handleChange = (e, value) => {
     setPage(value);
     console.log(value);
@@ -108,35 +99,10 @@ export default function ProductPage() {
     <div className="Staff">
       <div className="Staff__container">
         <div className="Staff__title">
-          <div className="Staff__title_Text">Товары</div>
+          <div className="Staff__title_Text">Клиенты</div>
           <div onClick={() => setIsopen(true)} className="Staff__title_btn">
             {" "}
-            <img src={plus} alt="" /> Добавить товар
-          </div>
-        </div>
-        <div className="Staff__filtration">
-          <div className="Staff__filtration_select">
-            <select className="Staff__filtration_select_select1" name="" id="">
-              <option value="" disabled selected>
-                Кольца
-              </option>
-              <option value="Necklace">Ожерелье</option>
-              <option value="Earrings">Серьги</option>
-            </select>
-            <select className="Staff__filtration_select_select2" name="" id="">
-              <option value="" disabled selected>
-                В наличии
-              </option>
-              <option value="none">Отсутствует</option>
-            </select>
-          </div>
-          <div className="Staff__filtration__input">
-            <img src={search} className="Staff__filtration__input_img" alt="" />
-            <input
-              type="text"
-              placeholder="Поиск"
-              className="Staff__filtration__input_input"
-            />
+            <img src={plus} alt="" /> Добавить клиента
           </div>
         </div>
         <div className="Staff__table">
@@ -153,7 +119,7 @@ export default function ProductPage() {
                     }}
                     align="center"
                   >
-                    Код
+                    Фио
                   </TableCell>
                   <TableCell
                     sx={{
@@ -164,7 +130,7 @@ export default function ProductPage() {
                     }}
                     align="center"
                   >
-                    Наименование
+                    Адрес
                   </TableCell>
                   <TableCell
                     sx={{
@@ -175,7 +141,7 @@ export default function ProductPage() {
                     }}
                     align="center"
                   >
-                    Категория{" "}
+                    Номер телефона
                   </TableCell>
                   <TableCell
                     sx={{
@@ -186,7 +152,7 @@ export default function ProductPage() {
                     }}
                     align="center"
                   >
-                    Проба
+                    Фото
                   </TableCell>
                   <TableCell
                     sx={{
@@ -197,7 +163,7 @@ export default function ProductPage() {
                     }}
                     align="center"
                   >
-                    Фото{" "}
+                    Примечание
                   </TableCell>
                   <TableCell
                     sx={{
@@ -208,7 +174,7 @@ export default function ProductPage() {
                     }}
                     align="center"
                   >
-                    Вес
+                    Платежеспособность
                   </TableCell>
                   <TableCell
                     sx={{
@@ -219,41 +185,9 @@ export default function ProductPage() {
                     }}
                     align="center"
                   >
-                    Размер{" "}
+                    ИНН{" "}
                   </TableCell>
-                  <TableCell
-                    sx={{
-                      borderRight: "1px solid white",
-                      color: "white",
-                      fontFamily: "Manrope",
-                      fontWeight: 700,
-                    }}
-                    align="center"
-                  >
-                    Себестоимость
-                  </TableCell>
-                  <TableCell
-                    sx={{
-                      borderRight: "1px solid white",
-                      color: "white",
-                      fontFamily: "Manrope",
-                      fontWeight: 700,
-                    }}
-                    align="center"
-                  >
-                    Б/У
-                  </TableCell>
-                  <TableCell
-                    sx={{
-                      borderRight: "1px solid white",
-                      color: "white",
-                      fontFamily: "Manrope",
-                      fontWeight: 700,
-                    }}
-                    align="center"
-                  >
-                    В наличии
-                  </TableCell>
+
                   <TableCell
                     sx={{
                       borderRight: "1px solid white",
@@ -283,7 +217,7 @@ export default function ProductPage() {
                       component="th"
                       scope="row"
                     >
-                      {row.code}
+                      {row.name}
                     </TableCell>
                     <TableCell
                       sx={{
@@ -293,7 +227,7 @@ export default function ProductPage() {
                       }}
                       align="center"
                     >
-                      {row.title}
+                      {row.address}
                     </TableCell>
                     <TableCell
                       sx={{
@@ -303,7 +237,7 @@ export default function ProductPage() {
                       }}
                       align="center"
                     >
-                      {row.category}
+                      {row.phone}
                     </TableCell>
                     <TableCell
                       sx={{
@@ -313,7 +247,7 @@ export default function ProductPage() {
                       }}
                       align="center"
                     >
-                      {row.proba}
+                      <img style={{ width: "50px" }} src={row.image} />
                     </TableCell>
                     <TableCell
                       sx={{
@@ -323,11 +257,7 @@ export default function ProductPage() {
                       }}
                       align="center"
                     >
-                      {/* {row.images.map((e) => (
-                        <></>
-                      ))} */}
-                        <img style={{width:"50px"}} src={row.images.map((e) => e.image)} />
-
+                      {row.description}
                     </TableCell>
                     <TableCell
                       sx={{
@@ -337,7 +267,7 @@ export default function ProductPage() {
                       }}
                       align="center"
                     >
-                      {row.weight}
+                      {row.payment ? "Да" : "Нет"}
                     </TableCell>
                     <TableCell
                       sx={{
@@ -347,37 +277,7 @@ export default function ProductPage() {
                       }}
                       align="center"
                     >
-                      {row.size}
-                    </TableCell>
-                    <TableCell
-                      sx={{
-                        fontFamily: "Manrope",
-                        fontSize: "14px",
-                        fontWeight: 500,
-                      }}
-                      align="center"
-                    >
-                      {row.cost}
-                    </TableCell>
-                    <TableCell
-                      sx={{
-                        fontFamily: "Manrope",
-                        fontSize: "14px",
-                        fontWeight: 500,
-                      }}
-                      align="center"
-                    >
-                      {row.used}
-                    </TableCell>
-                    <TableCell
-                      sx={{
-                        fontFamily: "Manrope",
-                        fontSize: "14px",
-                        fontWeight: 500,
-                      }}
-                      align="center"
-                    >
-                      {row.nalichii}
+                      {row.inn}
                     </TableCell>
                     <TableCell
                       sx={{

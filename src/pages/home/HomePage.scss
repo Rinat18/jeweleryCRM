@@ -7,7 +7,7 @@
 }
 
 .HomePage__container{
-    width: 96%;
+    width: 90%;
     display: flex;
     flex-direction: column;
     margin-top: 60px;
@@ -52,19 +52,22 @@
 
 .HomePage__container__cash__nal__soms__numbers{
     font-weight: 700;
-    font-size: 26px;
+    font-size: 20px;
     font-family: Manrope;
-    margin-left: 28%;
+    margin-left: 10%;
 } 
 
 .HomePage__container__cash__nal__btn{
+    img{
+        margin-right: 5px;
+    }
     width: 90%;
     display: flex;
     justify-content: center;
     align-items: center;
     background: #576ED0;
     color: #fff;
-    height: 50px;
+    height: 40px;
     border-radius: 100px;
 } 
 
@@ -104,13 +107,13 @@
 
 .HomePage__container__cash__cards__banks__optima__numbers{
     font-weight: 600;
-    font-size: 22px;
+    font-size: 20px;
     font-family: Manrope;
     margin-top: 10px;
 }
 .HomePage__container__cash__nal__btn2{
     margin-top: 10px;
-    height: 50px;
+    height: 40px;
 }
 
 
@@ -161,12 +164,12 @@
 .HomePage__container__statistik__numbers__solds__numbers{
     color: #3E3C3A;
     font-weight: 700;
-    font-size: 26px;
+    font-size: 22px;
 } 
 
 .HomePage__container__statistik__numbers__solds__text{
     color: #3E3C3A;
-    font-size: 14px;
+    font-size: 12px;
     margin-top: 5px;
     font-family: Manrope;
 
@@ -180,12 +183,12 @@
 .HomePage__container__statistik__numbers__cash__soms{
     color: #3E3C3A;
     font-weight: 700;
-    font-size: 26px;
+    font-size: 22px;
 }
 
 .HomePage__container__statistik__numbers__cash__text {
     color: #3E3C3A;
-    font-size: 14px;
+    font-size: 12px;
     margin-top: 5px;
     font-family: Manrope;
 
@@ -241,10 +244,11 @@
 
   
   /* Стили для самого модального окна */
-  .modal {
+  .modalHome {
     position: absolute;
     background-color: white;
     display: flex;
+    align-items: center;
     padding: 20px;
     top: 45px;
     border-radius: 5px;
@@ -277,6 +281,7 @@
     font-weight: 500;
     font-size: 12px;
     font-family: Manrope;
+    margin-top: 0;
 }
 
 .HomePage__container__statistik__solds__dates__category2{

@@ -11,18 +11,20 @@ import Cash from "../../images/Cash.png";
 import Expenses from "../../images/Expenses.png";
 import Salary from "../../images/Salary.png";
 import "./SideBar.scss";
+import { useNavigate } from "react-router-dom";
 
 export default function SideBar() {
+  const navigate = useNavigate()
   return (
     <div className="sideBar">
       <div className="sideBar__container">
         <div className="sideBar__container__logo">ЛОГО</div>
         <div className="sideBar__container__text">
-          <div className="sideBar__container__text__sites">
+          <div onClick={() => navigate("/")} className="sideBar__container__text__sites">
             <img src={Home} className="" />
             <div className="sideBar__container__text__sites__text">Главная</div>
           </div>
-          <div className="sideBar__container__text__sites">
+          <div onClick={() => navigate("/product")} className="sideBar__container__text__sites">
             <img src={Tovari} className="" />
             <div className="sideBar__container__text__sites__text">Товары</div>
           </div>
@@ -30,7 +32,7 @@ export default function SideBar() {
             <img src={Metals} className="" />
             <div className="sideBar__container__text__sites__text">Металл</div>
           </div>
-          <div className="sideBar__container__text__sites">
+          <div onClick={() => navigate("/staff")} className="sideBar__container__text__sites">
             <img src={Staff} className="" />
             <div className="sideBar__container__text__sites__text">
               Сотрудники
@@ -42,7 +44,7 @@ export default function SideBar() {
               Отчет по продажам
             </div>
           </div>
-          <div className="sideBar__container__text__sites">
+          <div onClick={() => navigate("/client")} className="sideBar__container__text__sites">
             <img src={Clients} className="" />
             <div className="sideBar__container__text__sites__text">Клиенты</div>
           </div>

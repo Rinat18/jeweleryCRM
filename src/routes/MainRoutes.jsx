@@ -5,6 +5,8 @@ import Layout from "../components/Layout";
 import HomePage from "../pages/home/HomePage";
 import Staff from "../pages/staff/Staff";
 import ProductPage from "../pages/product/ProductPage";
+import DetailProduct from "../components/detailProduct/DetailProduct";
+import Client from "../pages/client/Client";
 
 export default function MainRoutes() {
   const NOT_AUTH = [
@@ -18,12 +20,12 @@ export default function MainRoutes() {
       ),
     },
     {
-        link: "/staff",
-        element: (
-          <Layout>
-            <Staff />
-          </Layout>
-        ),
+      link: "/staff",
+      element: (
+        <Layout>
+          <Staff />
+        </Layout>
+      ),
     },
     {
       link: "/product",
@@ -32,7 +34,23 @@ export default function MainRoutes() {
           <ProductPage />
         </Layout>
       ),
-  }
+    },
+    {
+      link: "/detail/:id",
+      element: (
+        <Layout>
+          <DetailProduct />
+        </Layout>
+      ),
+    },
+    {
+      link: "/client",
+      element: (
+        <Layout>
+          <Client />
+        </Layout>
+      ),
+    },
   ];
 
   return (

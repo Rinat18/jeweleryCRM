@@ -120,7 +120,7 @@ export default function HomePage() {
                 Дата
                 <img onClick={() => setIsOpen(!isOpen)} src={calendar} alt="" />
                 {isOpen ? (
-                  <div className="modal">
+                  <div className="modalHome">
                     <div className="modal__text">От</div>
                     <input
                       className="modal__input"
@@ -190,7 +190,7 @@ export default function HomePage() {
                   alt=""
                 />
                 {isOpen2 ? (
-                  <div className="modal">
+                  <div className="modalHome">
                     <div className="modal__text">От</div>
                     <input
                       className="modal__input"
@@ -239,7 +239,7 @@ export default function HomePage() {
                   alt=""
                 />
                 {isOpen3 ? (
-                  <div className="modal">
+                  <div className="modalHome">
                     <div className="modal__text">От</div>
                     <input
                       className="modal__input"
