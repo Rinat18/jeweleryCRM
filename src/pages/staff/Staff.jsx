@@ -21,6 +21,8 @@ export default function Staff() {
 
   // ! HOOKS
   const [page, setPage] = useState(1);
+  const [limit, setLimit] = useState(4);
+
   const [isOpen, setIsopen] = useState(false);
   const [isOpen2, setIsopen2] = useState(false);
   const [isOpen3, setIsopen3] = useState(false);
@@ -30,8 +32,8 @@ export default function Staff() {
   const [id2, setId2] = useState(null);
 
   useEffect(() => {
-    getStaffs(page);
-  }, [page]);
+    getStaffs(page, limit);
+  }, []);
   //   useEffect(() => {
   //     getStaffs(page);
   //   }, [staffs]);
@@ -86,9 +88,20 @@ export default function Staff() {
     )
   );
 
+  console.log(rows);
+
   const handleChange = (e, value) => {
     setPage(value);
     console.log(value);
+  };
+
+  const [value, setValue] = useState("");
+
+  const handleChangeCount = (event) => {
+    const inputValue = event.target.value;
+    if (!isNaN(inputValue) && parseInt(inputValue) <= 100) {
+      setValue(inputValue);
+    }
   };
 
   // ! MODALS
@@ -226,7 +239,6 @@ export default function Staff() {
               <TableBody>
                 {rows.map((row) => (
                   <TableRow
-                    key={row.name}
                     sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
                   >
                     <TableCell
@@ -312,7 +324,7 @@ export default function Staff() {
                       {row.action}
                     </TableCell>
                   </TableRow>
-                ))}
+                ))} 
               </TableBody>
             </Table>
           </TableContainer>
@@ -332,7 +344,17 @@ export default function Staff() {
             <div className="Staff__pagination__page_text">
               Показать в таблице
             </div>
-            <div className="Staff__pagination__page_number">{page}</div>
+            <div
+              style={{ overflow: "hidden" }}
+              className="Staff__pagination__page_number"
+            >
+              <input
+                value={value}
+                onChange={handleChangeCount}
+                style={{ width: "29px" }}
+                type="number"
+              />
+            </div>
           </div>
         </div>
         {isOpen ? (

@@ -32,9 +32,9 @@ export default function StaffContext({ children }) {
   const [page, setPage] = useState(1);
 
   //! GET ALL STAFF
-  const getStaffs = async (page) => {
+  const getStaffs = async (page,limit) => {
     try {
-      const { data } = await axios(`${API}:8000/api/staff/?page=${page}`);
+      const { data } = await axios(`${API}:8000/api/staff/?page=${page}&limit=${limit}`);
       dispatch({
         type: STAFF_ACTIONS.GET__STAFFS,
         payload: data.results,

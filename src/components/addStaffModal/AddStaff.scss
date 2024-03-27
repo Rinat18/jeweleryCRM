@@ -44,29 +44,42 @@ form label {
   flex-direction: column;
 }
 
-form {
+.addStaffModalForm {
   display: flex;
   margin-top: 30px;
   width: 80%;
   justify-content: space-between;
+  select {
+    width: 100%;
+    padding: 8px;
+    background: #f6f6f6;
+    border-radius: 100px;
+    margin-bottom: 10px;
+    height: 43px;
+    margin-top: 5px;
+    border: 1px solid #ccc;
+    box-sizing: border-box; /* Учитываем отступы и границу в общую ширину */
+  }
 }
 
-form > div {
+.addStaffModalForm > div {
   display: flex;
   flex-direction: column;
   width: 47%;
 }
 
-form input, select {
-  width: 100%;
-  padding: 8px;
-  background: #f6f6f6;
-  border-radius: 100px;
-  margin-bottom: 10px;
-  height: 43px;
-  margin-top: 5px;
-  border: 1px solid #ccc;
-  box-sizing: border-box; /* Учитываем отступы и границу в общую ширину */
+.addStaffModalForm {
+  input {
+    width: 100%;
+    padding: 8px;
+    background: #f6f6f6;
+    border-radius: 100px;
+    margin-bottom: 10px;
+    height: 43px;
+    margin-top: 5px;
+    border: 1px solid #ccc;
+    box-sizing: border-box; /* Учитываем отступы и границу в общую ширину */
+  }
 }
 
 button {
@@ -136,7 +149,6 @@ input {
   }
 }
 
-
 .chooseImages {
   display: flex;
   flex-wrap: wrap;
@@ -179,8 +191,6 @@ input {
     height: 20px;
   }
 }
-
-
 
 .selectedImg {
   position: absolute;

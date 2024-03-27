@@ -33,7 +33,7 @@ function AddEmployeeModal({ isOpen, closeModal }) {
     <div className="modal-overlay">
       <div className="modal">
         <h2>Добавить Сотрудника</h2>
-        <form onSubmit={handleSubmit}>
+        <form className="addStaffModalForm" onSubmit={handleSubmit}>
           <div>
             <label>
               ФИО

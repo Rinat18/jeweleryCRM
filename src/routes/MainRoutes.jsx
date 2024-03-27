@@ -7,6 +7,7 @@ import Staff from "../pages/staff/Staff";
 import ProductPage from "../pages/product/ProductPage";
 import DetailProduct from "../components/detailProduct/DetailProduct";
 import Client from "../pages/client/Client";
+import DetailClient from "../components/detailClient/DetailClient";
 
 export default function MainRoutes() {
   const NOT_AUTH = [
@@ -48,6 +49,14 @@ export default function MainRoutes() {
       element: (
         <Layout>
           <Client />
+        </Layout>
+      ),
+    },
+    {
+      link: "/detailClient/:id",
+      element: (
+        <Layout>
+          <DetailClient />
         </Layout>
       ),
     },

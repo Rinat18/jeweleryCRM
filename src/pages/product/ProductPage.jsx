@@ -16,6 +16,7 @@ import "./ProductPage.scss";
 import { useProduct } from "../../context/ProductContext";
 import AddProductModal from "../../components/addProductModal/AddProductModal";
 import { useNavigate } from "react-router-dom";
+import ModalForItem from "../../components/ModalImageItem/ModalImageItem";
 
 export default function ProductPage() {
   const { products, getProducts, getCategories, getOneProduct } = useProduct();
@@ -88,7 +89,7 @@ export default function ProductPage() {
       elem.in_stock ? "новый" : "б/у",
       elem.used ? "есть" : "нету",
       <>
-        <img src={Eye} onClick={() => getOnePage(elem.id)} alt="" />
+        <img src={Eye} style={{ cursor:"pointer"}} onClick={() => getOnePage(elem.id)} alt="" />
       </>
     )
   );
@@ -326,7 +327,7 @@ export default function ProductPage() {
                       {/* {row.images.map((e) => (
                         <></>
                       ))} */}
-                        <img style={{width:"50px"}} src={row.images.map((e) => e.image)} />
+                        <img onClick={() => setIsopen2(true)} style={{width:"50px"}} src={row.images.map((e) => e.image)} />
 
                     </TableCell>
                     <TableCell
@@ -397,7 +398,6 @@ export default function ProductPage() {
         </div>
         <div className="Staff__pagination">
           <div className="Staff__pagination_paginations">
-            {" "}
             <Stack spacing={2}>
               <Pagination
                 count={count}

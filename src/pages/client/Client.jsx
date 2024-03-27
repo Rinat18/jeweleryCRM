@@ -17,10 +17,11 @@ import { useProduct } from "../../context/ProductContext";
 import AddProductModal from "../../components/addProductModal/AddProductModal";
 import { useNavigate } from "react-router-dom";
 import { useClient } from "../../context/ClientContext";
+import AddClient from "../../components/addClientModal/AddClient";
+import ModalForItem from "../../components/ModalImageItem/ModalImageItem";
 
 export default function Client() {
-  const { products, getProducts, getCategories, getOneProduct } = useProduct();
-  const { getClients, clients } = useClient();
+  const { getClients, clients, getOneClient } = useClient();
   useEffect(() => {
     getClients(page);
   }, []);
@@ -48,22 +49,22 @@ export default function Client() {
   // !FUNCTIONS
   const staffs = [1];
   function createData(
-    name,
+    full_name,
     address,
     phone,
-    img,
-    description,
-    payment,
+    image,
+    note,
+    solvency,
     inn,
     action
   ) {
     return {
-      name,
+      full_name,
       address,
       phone,
-      img,
-      description,
-      payment,
+      image,
+      note,
+      solvency,
       inn,
       action,
     };
@@ -71,21 +72,26 @@ export default function Client() {
 
   const rows = clients.map((elem) =>
     createData(
-      elem.name ? elem.name : "Без Имени",
+      elem.full_name ? elem.full_name : "Без Имени",
       elem.address ? elem.address : "Без Адресса",
       elem.phone ? elem.phone : "Без Номера",
       elem.image ? elem.image : "Без Фото",
       elem.note ? elem.note : "Без Описания",
-      elem.solvency ? elem.solvency : "Без данных",
+      elem.solvency ? "Да" : "Нет",
       elem.inn ? elem.inn : "Без данных",
       <>
-        <img src={Eye} onClick={() => getOnePage(elem.id)} alt="" />
+        <img
+          src={Eye}
+          style={{ cursor: "pointer" }}
+          onClick={() => getOnePage(elem.id)}
+          alt=""
+        />
       </>
     )
   );
-  console.log(rows);
+  console.log(rows.solvency);
   const getOnePage = (id) => {
-    navigate(`/detail/${id}`);
+    navigate(`/detailClient/${id}`);
   };
   const handleChange = (e, value) => {
     setPage(value);
@@ -94,6 +100,9 @@ export default function Client() {
 
   const closeModal = () => {
     setIsopen(false);
+  };
+  const closeModal2 = () => {
+    setIsopen2(false);
   };
   return (
     <div className="Staff">
@@ -204,7 +213,7 @@ export default function Client() {
               <TableBody>
                 {rows.map((row) => (
                   <TableRow
-                    key={row.name}
+                    key={row.full_name}
                     sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
                   >
                     <TableCell
@@ -217,7 +226,7 @@ export default function Client() {
                       component="th"
                       scope="row"
                     >
-                      {row.name}
+                      {row.full_name}
                     </TableCell>
                     <TableCell
                       sx={{
@@ -247,7 +256,11 @@ export default function Client() {
                       }}
                       align="center"
                     >
-                      <img style={{ width: "50px" }} src={row.image} />
+                      {row.image == "Без Фото" ? (
+                        "Нет фотографии"
+                      ) : (
+                        <img style={{ width: "50px" }} src={row.image} />
+                      )}
                     </TableCell>
                     <TableCell
                       sx={{
@@ -257,7 +270,7 @@ export default function Client() {
                       }}
                       align="center"
                     >
-                      {row.description}
+                      {row.note}
                     </TableCell>
                     <TableCell
                       sx={{
@@ -267,7 +280,7 @@ export default function Client() {
                       }}
                       align="center"
                     >
-                      {row.payment ? "Да" : "Нет"}
+                      {row.solvency}
                     </TableCell>
                     <TableCell
                       sx={{
@@ -313,9 +326,8 @@ export default function Client() {
             <div className="Staff__pagination__page_number">{page}</div>
           </div>
         </div>
-        {isOpen ? (
-          <AddProductModal isOpen={isOpen} closeModal={closeModal} />
-        ) : null}
+        {isOpen ? <AddClient isOpen={isOpen} closeModal={closeModal} /> : null}
+        {isOpen2 ? <ModalForItem closeModal2={closeModal2} /> : null}
       </div>
     </div>
   );

@@ -50,7 +50,7 @@ export default function ClientContext({ children }) {
   // ! GET ONE PRODUCT
   const getOneClient = async (id) => {
     try {
-      const { data } = await axios(`${API}:8000/api/products/${id}/`);
+      const { data } = await axios(`${API}:8000/api/clients/${id}/`);
       console.log(data);
       dispatch({
         type: CLIENTS_ACTIONS.GET_ONE_CLIENT,
@@ -64,7 +64,7 @@ export default function ClientContext({ children }) {
   // ! EDIT PRODUCT
   const editClient = async (id, formData) => {
     try {
-      await axios.patch(`${API}:8000/api/products/update/${id}/`, formData);
+      await axios.patch(`${API}:8000/api/clients/${id}/`, formData);
       getClients(page);
     } catch (error) {
       console.log(error);
@@ -74,7 +74,7 @@ export default function ClientContext({ children }) {
   // ! DELETE PRODUCT
   const deleteClient = async (id) => {
     try {
-      await axios.delete(`${API}:8000/api/products/${id}`);
+      await axios.delete(`${API}:8000/api/clients/${id}`);
       getClients(page);
     } catch (error) {
       console.log(error);
