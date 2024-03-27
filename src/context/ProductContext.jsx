@@ -25,14 +25,20 @@ const reducer = (state = INIT_STATE, action) => {
 export default function ProductContext({ children }) {
   const [state, dispatch] = useReducer(reducer, INIT_STATE);
   const [page, setPage] = useState(1);
+  const [category, setCategory] = useState("");
+  const [limit, setLimit] = useState(4);
+  const [inStock, setInStock] = useState("");
+  const [search, setSearch] = useState("");
 
   //! GET ALL PRODUCT
-  const getProducts = async (page) => {
+  const getProducts = async (page, limit, category, in_stock, search) => {
     try {
-      const { data } = await axios(`${API}:8000/api/products/?page=${page}`);
+      const { data } = await axios(
+        `${API}:8000/api/products/?page=${page}&limit=${limit}&category=${category}&in_stock=${in_stock}$search=${search}`
+      );
       dispatch({
         type: PRODUCT_ACTIONS.GET_PRODUCTS,
-        payload: data.results,
+        payload: data,
       });
     } catch (error) {
       console.log(error);
@@ -58,7 +64,7 @@ export default function ProductContext({ children }) {
   const addProduct = async (formdata) => {
     try {
       await axios.post(`${API}:8000/api/products/`, formdata);
-      getProducts(page);
+      getProducts(page, limit, category, inStock, search);
     } catch (error) {
       console.log(error);
     }
@@ -66,38 +72,37 @@ export default function ProductContext({ children }) {
 
   // ! GET ONE PRODUCT
   const getOneProduct = async (id) => {
-    try{
-      const {data} = await axios(`${API}:8000/api/products/${id}/`)
+    try {
+      const { data } = await axios(`${API}:8000/api/products/${id}/`);
       console.log(data);
       dispatch({
         type: PRODUCT_ACTIONS.GET_ONE_PRODUCT,
-        payload: data
-      })
-    }catch(error){
+        payload: data,
+      });
+    } catch (error) {
       console.log(error);
     }
-  }
+  };
 
-  // ! EDIT PRODUCT 
+  // ! EDIT PRODUCT
   const editProduct = async (id, formData) => {
-    try{
-      await axios.patch(`${API}:8000/api/products/update/${id}/`, formData)
-      getProducts(page)
-    }catch(error){
+    try {
+      await axios.patch(`${API}:8000/api/products/update/${id}/`, formData);
+      getProducts(page, limit, category, inStock, search);
+    } catch (error) {
       console.log(error);
     }
-  }
+  };
 
-  // ! DELETE PRODUCT 
+  // ! DELETE PRODUCT
   const deleteProduct = async (id) => {
-    try{
-      await axios.delete(`${API}:8000/api/products/${id}`)
-      getProducts(page)
-    }catch(error){
+    try {
+      await axios.delete(`${API}:8000/api/products/${id}`);
+      getProducts(page, limit, category, inStock, search);
+    } catch (error) {
       console.log(error);
     }
-  }
-
+  };
 
   const values = {
     getProducts,

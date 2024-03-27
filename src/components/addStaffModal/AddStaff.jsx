@@ -1,32 +1,34 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./AddStaff.scss";
 import { useStaff } from "../../context/StaffContext";
 
 function AddEmployeeModal({ isOpen, closeModal }) {
-  const { addStaff } = useStaff();
+  const { addStaff, getPositions, positions } = useStaff();
+
+  useEffect(() => {
+    getPositions();
+  }, []);
 
   const [name, setName] = useState("");
-  const [position, setPosition] = useState("");
+  const [position, setPosition] = useState();
   const [percent, setPercent] = useState("");
   const [phone, setPhone] = useState("");
   const [address, setAddress] = useState("");
   const [salary, setSalary] = useState("");
   const [password, setPassword] = useState("");
-
   const handleSubmit = (e) => {
     e.preventDefault();
     const formData = new FormData();
     formData.append("full_name", name);
     formData.append("phone", phone);
-    formData.append("position", position);
+    formData.append("position", +position);
     formData.append("address", address);
-    formData.append("salary", salary);
-    formData.append("percentage_of_the_sale", percent);
-    formData.append("password", password);
-    // Здесь можно отправить данные или выполнить другие действия
-    // onAdd({ name, phone, address, salary, percent, password });
+    formData.append("salary", +salary);
+    formData.append("percentage_of_the_sale", +percent);
+    formData.append("password", "123123123");
+    formData.append("confirm_password	", "123123123");
+    closeModal(true);
     addStaff(formData);
-    closeModal();
   };
   console.log(isOpen);
   return (
@@ -46,7 +48,7 @@ function AddEmployeeModal({ isOpen, closeModal }) {
             <label>
               Номер телефона
               <input
-                type="select"
+                type="text"
                 value={phone}
                 onChange={(e) => setPhone(e.target.value)}
               />
@@ -71,11 +73,18 @@ function AddEmployeeModal({ isOpen, closeModal }) {
           <div>
             <label>
               Должность
-              <input
-                type="select"
-                value={position}
+              <select
                 onChange={(e) => setPosition(e.target.value)}
-              />
+                name=""
+                id=""
+              >
+                <option value="">Выберите должность</option>
+
+                {positions &&
+                  positions.map((elem) => (
+                    <option value={elem.id}>{elem.name}</option>
+                  ))}
+              </select>
             </label>
             <label>
               Адрес

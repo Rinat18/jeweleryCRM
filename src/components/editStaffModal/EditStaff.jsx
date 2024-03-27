@@ -2,44 +2,47 @@ import React, { useEffect, useState } from "react";
 import "../addStaffModal/AddStaff.scss";
 import { useStaff } from "../../context/StaffContext";
 
-function EditEmployeeModal({ isOpen, closeModal, onAdd }) {
-  const { oneStaff, editStaff } = useStaff();
+function EditEmployeeModal({ closeModal }) {
+  const { oneStaff, editStaff, getPositions, positions } = useStaff();
   useEffect(() => {
     if (oneStaff) {
       setName(oneStaff.full_name);
-      setPosition(oneStaff.position);
+      if (oneStaff.position) {
+        setPosition(oneStaff.position.slug);
+      }
       setPercent(oneStaff.percentage_of_the_sale);
       setPhone(oneStaff.phone);
       setAddress(oneStaff.address);
       setSalary(oneStaff.salary);
       setPassword(oneStaff.password);
     }
+    getPositions();
   }, [oneStaff]);
-  console.log(oneStaff);
-  const [name, setName] = useState(oneStaff ? oneStaff.full_name : "");
-  const [position, setPosition] = useState(oneStaff ? oneStaff.position : "");
-  const [percent, setPercent] = useState(
-    oneStaff ? oneStaff.percentage_of_the_sale : ""
-  );
-  const [phone, setPhone] = useState(oneStaff ? oneStaff.phone : "");
-  const [address, setAddress] = useState(oneStaff ? oneStaff.address : "");
-  const [salary, setSalary] = useState(oneStaff ? oneStaff.salary : "");
-  const [password, setPassword] = useState(oneStaff ? oneStaff.password : "");
+  console.log(positions);
+  const [name, setName] = useState();
+  const [position, setPosition] = useState();
+  const [percent, setPercent] = useState();
+  const [phone, setPhone] = useState();
+  const [address, setAddress] = useState();
+  const [salary, setSalary] = useState();
+  const [password, setPassword] = useState();
 
+  console.log(oneStaff);
   const handleSubmit = (e) => {
     e.preventDefault();
     const formData = new FormData();
     formData.append("full_name", name);
     formData.append("phone", phone);
-    formData.append("position", position);
+    formData.append("position", +position);
     formData.append("address", address);
     formData.append("salary", salary);
     formData.append("percentage_of_the_sale", percent);
-    formData.append("password", password);
-    editStaff(oneStaff.id,formData);
-    closeModal();
+    formData.append("password", "12345678");
+    formData.append("confirm_password", "12345678");
+    editStaff(46, formData);
+    // closeModal();
   };
-  console.log(isOpen);
+  console.log(positions);
   return (
     <div className="modal-overlay">
       <div className="modal">
@@ -57,7 +60,7 @@ function EditEmployeeModal({ isOpen, closeModal, onAdd }) {
             <label>
               Номер телефона
               <input
-                type="select"
+                type="text"
                 value={phone}
                 onChange={(e) => setPhone(e.target.value)}
               />
@@ -82,11 +85,18 @@ function EditEmployeeModal({ isOpen, closeModal, onAdd }) {
           <div>
             <label>
               Должность
-              <input
-                type="select"
-                value={position}
+              <select
                 onChange={(e) => setPosition(e.target.value)}
-              />
+                name=""
+                id=""
+              >
+                <option value="">Выберите должность</option>
+
+                {positions &&
+                  positions.map((elem) => (
+                    <option value={elem.id}>{elem.name}</option>
+                  ))}
+              </select>
             </label>
             <label>
               Адрес

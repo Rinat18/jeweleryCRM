@@ -21,7 +21,7 @@ export default function Staff() {
 
   // ! HOOKS
   const [page, setPage] = useState(1);
-  const [limit, setLimit] = useState(4);
+  const [limit, setLimit] = useState(5);
 
   const [isOpen, setIsopen] = useState(false);
   const [isOpen2, setIsopen2] = useState(false);
@@ -33,21 +33,12 @@ export default function Staff() {
 
   useEffect(() => {
     getStaffs(page, limit);
-  }, []);
-  //   useEffect(() => {
-  //     getStaffs(page);
-  //   }, [staffs]);
+  }, [limit, page]);
 
   // !PAGINATION
-  const tables = [1, 2, 3, 4];
-  const itemPerPage = 1;
-
-  const count = Math.ceil(tables.length / itemPerPage);
-  // console.log(count);
-  const currentData = () => {
-    const begin = (page - 1) * itemPerPage;
-    const end = begin + itemPerPage;
-    return tables.slice(begin, end);
+  const count = Math.ceil(staffs.count / limit);
+  const handleChange = (e, value) => {
+    setPage(value);
   };
 
   // ! FUNCTIONS
@@ -64,45 +55,32 @@ export default function Staff() {
   ) {
     return { name, JobTitle, phone, adres, data, salary, percent, action };
   }
-  const rows = staffs.map((elem) =>
-    createData(
-      elem.full_name ? elem.full_name : "Без именни",
-      elem.position ? elem.position : "Без должности",
-      elem.phone ? elem.phone : "Без номера",
-      elem.address ? elem.address : "Без адресса",
-      elem.date_joined ? elem.date_joined : "Нету данных",
-      elem.salary ? elem.salary : "Без Оклада",
-      elem.percentage_of_the_sale
-        ? elem.percentage_of_the_sale
-        : "Без процента",
-      <>
-        <ModeOutlinedIcon
-          sx={{ color: "#576ED0", cursor: "pointer" }}
-          onClick={() => getUser(elem.id)}
-        />{" "}
-        <DeleteOutlinedIcon
-          sx={{ color: "#576ED0", cursor: "pointer" }}
-          onClick={() => infForDelete(elem.full_name, elem.id)}
-        />
-      </>
-    )
-  );
-
-  console.log(rows);
-
-  const handleChange = (e, value) => {
-    setPage(value);
-    console.log(value);
-  };
-
-  const [value, setValue] = useState("");
-
-  const handleChangeCount = (event) => {
-    const inputValue = event.target.value;
-    if (!isNaN(inputValue) && parseInt(inputValue) <= 100) {
-      setValue(inputValue);
-    }
-  };
+  let rows;
+  if (staffs.results) {
+    rows = staffs.results.map((elem) =>
+      createData(
+        elem.full_name ? elem.full_name : "Без именни",
+        elem.position ? elem.position : "Без должности",
+        elem.phone ? elem.phone : "Без номера",
+        elem.address ? elem.address : "Без адресса",
+        elem.date_joined ? elem.date_joined : "Нету данных",
+        elem.salary ? elem.salary : "Без Оклада",
+        elem.percentage_of_the_sale
+          ? elem.percentage_of_the_sale
+          : "Без процента",
+        <>
+          <ModeOutlinedIcon
+            sx={{ color: "#576ED0", cursor: "pointer" }}
+            onClick={() => getUser(elem.id)}
+          />{" "}
+          <DeleteOutlinedIcon
+            sx={{ color: "#576ED0", cursor: "pointer" }}
+            onClick={() => infForDelete(elem.full_name, elem.id)}
+          />
+        </>
+      )
+    );
+  }
 
   // ! MODALS
 
@@ -237,94 +215,98 @@ export default function Staff() {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {rows.map((row) => (
-                  <TableRow
-                    sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-                  >
-                    <TableCell
-                      sx={{
-                        fontFamily: "Manrope",
-                        fontSize: "14px",
-                        fontWeight: 500,
-                      }}
-                      align="center"
-                      component="th"
-                      scope="row"
-                    >
-                      {row.name}
-                    </TableCell>
-                    <TableCell
-                      sx={{
-                        fontFamily: "Manrope",
-                        fontSize: "14px",
-                        fontWeight: 500,
-                      }}
-                      align="center"
-                    >
-                      {row.JobTitle}
-                    </TableCell>
-                    <TableCell
-                      sx={{
-                        fontFamily: "Manrope",
-                        fontSize: "14px",
-                        fontWeight: 500,
-                      }}
-                      align="center"
-                    >
-                      {row.phone}
-                    </TableCell>
-                    <TableCell
-                      sx={{
-                        fontFamily: "Manrope",
-                        fontSize: "14px",
-                        fontWeight: 500,
-                      }}
-                      align="center"
-                    >
-                      {row.adres}
-                    </TableCell>
-                    <TableCell
-                      sx={{
-                        fontFamily: "Manrope",
-                        fontSize: "14px",
-                        fontWeight: 500,
-                      }}
-                      align="center"
-                    >
-                      {row.data}
-                    </TableCell>
-                    <TableCell
-                      sx={{
-                        fontFamily: "Manrope",
-                        fontSize: "14px",
-                        fontWeight: 500,
-                      }}
-                      align="center"
-                    >
-                      {row.salary}
-                    </TableCell>
-                    <TableCell
-                      sx={{
-                        fontFamily: "Manrope",
-                        fontSize: "14px",
-                        fontWeight: 500,
-                      }}
-                      align="center"
-                    >
-                      {row.percent}
-                    </TableCell>
-                    <TableCell
-                      sx={{
-                        fontFamily: "Manrope",
-                        fontSize: "14px",
-                        fontWeight: 500,
-                      }}
-                      align="center"
-                    >
-                      {row.action}
-                    </TableCell>
-                  </TableRow>
-                ))} 
+                {rows
+                  ? rows.map((row) => (
+                      <TableRow
+                        sx={{
+                          "&:last-child td, &:last-child th": { border: 0 },
+                        }}
+                      >
+                        <TableCell
+                          sx={{
+                            fontFamily: "Manrope",
+                            fontSize: "14px",
+                            fontWeight: 500,
+                          }}
+                          align="center"
+                          component="th"
+                          scope="row"
+                        >
+                          {row.name}
+                        </TableCell>
+                        <TableCell
+                          sx={{
+                            fontFamily: "Manrope",
+                            fontSize: "14px",
+                            fontWeight: 500,
+                          }}
+                          align="center"
+                        >
+                          {row.JobTitle.name}
+                        </TableCell>
+                        <TableCell
+                          sx={{
+                            fontFamily: "Manrope",
+                            fontSize: "14px",
+                            fontWeight: 500,
+                          }}
+                          align="center"
+                        >
+                          {row.phone}
+                        </TableCell>
+                        <TableCell
+                          sx={{
+                            fontFamily: "Manrope",
+                            fontSize: "14px",
+                            fontWeight: 500,
+                          }}
+                          align="center"
+                        >
+                          {row.adres}
+                        </TableCell>
+                        <TableCell
+                          sx={{
+                            fontFamily: "Manrope",
+                            fontSize: "14px",
+                            fontWeight: 500,
+                          }}
+                          align="center"
+                        >
+                          {row.data}
+                        </TableCell>
+                        <TableCell
+                          sx={{
+                            fontFamily: "Manrope",
+                            fontSize: "14px",
+                            fontWeight: 500,
+                          }}
+                          align="center"
+                        >
+                          {row.salary}
+                        </TableCell>
+                        <TableCell
+                          sx={{
+                            fontFamily: "Manrope",
+                            fontSize: "14px",
+                            fontWeight: 500,
+                          }}
+                          align="center"
+                        >
+                          {row.percent}
+                        </TableCell>
+                        <TableCell
+                          sx={{
+                            fontFamily: "Manrope",
+                            fontSize: "14px",
+                            fontWeight: 500,
+                          }}
+                          align="center"
+                        >
+                          {row.action}
+                        </TableCell>
+                      </TableRow>
+                    ))
+                  : null}
               </TableBody>
             </Table>
           </TableContainer>
@@ -334,9 +316,9 @@ export default function Staff() {
             {" "}
             <Stack spacing={2}>
               <Pagination
+                onChange={handleChange}
                 count={count}
                 color="primary"
-                onChange={handleChange}
               />
             </Stack>
           </div>
@@ -344,14 +326,10 @@ export default function Staff() {
             <div className="Staff__pagination__page_text">
               Показать в таблице
             </div>
-            <div
-              style={{ overflow: "hidden" }}
-              className="Staff__pagination__page_number"
-            >
+            <div className="Staff__pagination__page_number">
               <input
-                value={value}
-                onChange={handleChangeCount}
-                style={{ width: "29px" }}
+                value={limit}
+                onChange={(e) => setLimit(e.target.value)}
                 type="number"
               />
             </div>

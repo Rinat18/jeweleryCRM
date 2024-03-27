@@ -19,7 +19,7 @@ export default function AddProductModal({ isOpen, closeModal }) {
     e.preventDefault();
     const formData = new FormData();
     formData.append("category", +category);
-    // formData.append("barcode", barcode);
+    formData.append("barcode", barcode);
     formData.append("title", title);
     formData.append("sample_number", sample_number);
     formData.append("weight", weight);

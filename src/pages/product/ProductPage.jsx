@@ -8,7 +8,7 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import Eye from "../../images/eyeBlue.png";
-import search from "../../images/search-sm.png";
+import SSearch from "../../images/search-sm.png";
 import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
 import "../staff/Staff.scss";
@@ -19,31 +19,30 @@ import { useNavigate } from "react-router-dom";
 import ModalForItem from "../../components/ModalImageItem/ModalImageItem";
 
 export default function ProductPage() {
-  const { products, getProducts, getCategories, getOneProduct } = useProduct();
+  const { products, getProducts, getCategories, categories } = useProduct();
 
-  useEffect(() => {
-    getProducts(page);
-    getCategories();
-  }, []);
-
-  console.log(products);
+  // console.log(categories);
   // ! HOOKS
   const [page, setPage] = useState(1);
+  const [category, setCategory] = useState("");
+  const [limit, setLimit] = useState(4);
+  const [inStock, setInStock] = useState("");
+  const [search, setSearch] = useState("");
   const [isOpen, setIsopen] = useState(false);
   const [isOpen2, setIsopen2] = useState(false);
   const [isOpen3, setIsopen3] = useState(false);
 
-  const navigate = useNavigate()
-  // !PAGINATION
-  const tables = [1, 2, 3, 4];
-  const itemPerPage = 1;
+  const navigate = useNavigate();
 
-  const count = Math.ceil(tables.length / itemPerPage);
-  // console.log(count);
-  const currentData = () => {
-    const begin = (page - 1) * itemPerPage;
-    const end = begin + itemPerPage;
-    return tables.slice(begin, end);
+  useEffect(() => {
+    getProducts(page, limit, category, inStock, search);
+    getCategories();
+    console.log(search);
+  }, [page, limit, category, inStock, search]);
+  // !PAGINATION
+  const count = Math.ceil(products.count / limit);
+  const handleChange = (e, value) => {
+    setPage(value);
   };
 
   // !FUNCTIONS
@@ -75,31 +74,39 @@ export default function ProductPage() {
       action,
     };
   }
-  
-  const rows = products.map((elem) =>
-    createData(
-      elem.barcode ? elem.barcode : "Без баркода",
-      elem.title ? elem.title : "Без название",
-      elem.category.name ? elem.category.name : "Без категроии",
-      elem.sample_number ? elem.sample_number : "Без пробы",
-      elem.images ? elem.images : "Без фотографии",
-      elem.weight ? elem.weight : "Без весса",
-      elem.size ? elem.size : "Без размера",
-      elem.cost_price ? elem.cost_price : "0",
-      elem.in_stock ? "новый" : "б/у",
-      elem.used ? "есть" : "нету",
-      <>
-        <img src={Eye} style={{ cursor:"pointer"}} onClick={() => getOnePage(elem.id)} alt="" />
-      </>
-    )
-  );
+
+  console.log(inStock);
+  console.log(products);
+  let rows;
+
+  if (products.results) {
+    rows = products.results.map((elem) =>
+      createData(
+        elem.barcode ? elem.barcode : "Без баркода",
+        elem.title ? elem.title : "Без название",
+        elem.category.name ? elem.category.name : "Без категроии",
+        elem.sample_number ? elem.sample_number : "Без пробы",
+        elem.images ? elem.images : "Без фотографии",
+        elem.weight ? elem.weight : "Без весса",
+        elem.size ? elem.size : "Без размера",
+        elem.cost_price ? elem.cost_price : "0",
+        elem.used ? "б/у" : "новый",
+        elem.in_stock ? "есть" : "нету",
+        <>
+          <img
+            src={Eye}
+            style={{ cursor: "pointer" }}
+            onClick={() => getOnePage(elem.id)}
+            alt=""
+          />
+        </>
+      )
+    );
+  }
+
   console.log(rows);
-      const getOnePage = (id) => {
-        navigate(`/detail/${id}`)
-      }
-  const handleChange = (e, value) => {
-    setPage(value);
-    console.log(value);
+  const getOnePage = (id) => {
+    navigate(`/detail/${id}`);
   };
 
   const closeModal = () => {
@@ -117,25 +124,40 @@ export default function ProductPage() {
         </div>
         <div className="Staff__filtration">
           <div className="Staff__filtration_select">
-            <select className="Staff__filtration_select_select1" name="" id="">
-              <option value="" disabled selected>
-                Кольца
-              </option>
+            <select
+              onChange={(e) => setCategory(e.target.value)}
+              className="Staff__filtration_select_select1"
+              name=""
+              id=""
+            >
+              <option value="">Выберите категрию</option>
+
+              {categories.map((elem) => (
+                <option value={elem.id}>{elem.slug}</option>
+              ))}
               <option value="Necklace">Ожерелье</option>
               <option value="Earrings">Серьги</option>
             </select>
-            <select className="Staff__filtration_select_select2" name="" id="">
-              <option value="" disabled selected>
-                В наличии
-              </option>
-              <option value="none">Отсутствует</option>
+            <select
+              onChange={(e) =>
+                e.target.value == "true" ? setInStock(true) : setInStock(false)
+              }
+              className="Staff__filtration_select_select2"
+            >
+              <option value="true">В наличии</option>
+              <option value="false">Отсутствует</option>
             </select>
           </div>
           <div className="Staff__filtration__input">
-            <img src={search} className="Staff__filtration__input_img" alt="" />
+            <img
+              src={SSearch}
+              className="Staff__filtration__input_img"
+              alt=""
+            />
             <input
               type="text"
               placeholder="Поиск"
+              onChange={(e) => setSearch(e.target.value)}
               className="Staff__filtration__input_input"
             />
           </div>
@@ -269,140 +291,149 @@ export default function ProductPage() {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {rows.map((row) => (
-                  <TableRow
-                    key={row.name}
-                    sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-                  >
-                    <TableCell
-                      sx={{
-                        fontFamily: "Manrope",
-                        fontSize: "14px",
-                        fontWeight: 500,
-                      }}
-                      align="center"
-                      component="th"
-                      scope="row"
-                    >
-                      {row.code}
-                    </TableCell>
-                    <TableCell
-                      sx={{
-                        fontFamily: "Manrope",
-                        fontSize: "14px",
-                        fontWeight: 500,
-                      }}
-                      align="center"
-                    >
-                      {row.title}
-                    </TableCell>
-                    <TableCell
-                      sx={{
-                        fontFamily: "Manrope",
-                        fontSize: "14px",
-                        fontWeight: 500,
-                      }}
-                      align="center"
-                    >
-                      {row.category}
-                    </TableCell>
-                    <TableCell
-                      sx={{
-                        fontFamily: "Manrope",
-                        fontSize: "14px",
-                        fontWeight: 500,
-                      }}
-                      align="center"
-                    >
-                      {row.proba}
-                    </TableCell>
-                    <TableCell
-                      sx={{
-                        fontFamily: "Manrope",
-                        fontSize: "14px",
-                        fontWeight: 500,
-                      }}
-                      align="center"
-                    >
-                      {/* {row.images.map((e) => (
+                {rows
+                  ? rows.map((row) => (
+                      <TableRow
+                        key={row.name}
+                        sx={{
+                          "&:last-child td, &:last-child th": { border: 0 },
+                        }}
+                      >
+                        <TableCell
+                          sx={{
+                            fontFamily: "Manrope",
+                            fontSize: "14px",
+                            fontWeight: 500,
+                          }}
+                          align="center"
+                          component="th"
+                          scope="row"
+                        >
+                          {row.code}
+                        </TableCell>
+                        <TableCell
+                          sx={{
+                            fontFamily: "Manrope",
+                            fontSize: "14px",
+                            fontWeight: 500,
+                          }}
+                          align="center"
+                        >
+                          {row.title}
+                        </TableCell>
+                        <TableCell
+                          sx={{
+                            fontFamily: "Manrope",
+                            fontSize: "14px",
+                            fontWeight: 500,
+                          }}
+                          align="center"
+                        >
+                          {row.category}
+                        </TableCell>
+                        <TableCell
+                          sx={{
+                            fontFamily: "Manrope",
+                            fontSize: "14px",
+                            fontWeight: 500,
+                          }}
+                          align="center"
+                        >
+                          {row.proba}
+                        </TableCell>
+                        <TableCell
+                          sx={{
+                            fontFamily: "Manrope",
+                            fontSize: "14px",
+                            fontWeight: 500,
+                          }}
+                          align="center"
+                        >
+                          {/* {row.images.map((e) => (
                         <></>
                       ))} */}
-                        <img onClick={() => setIsopen2(true)} style={{width:"50px"}} src={row.images.map((e) => e.image)} />
-
-                    </TableCell>
-                    <TableCell
-                      sx={{
-                        fontFamily: "Manrope",
-                        fontSize: "14px",
-                        fontWeight: 500,
-                      }}
-                      align="center"
-                    >
-                      {row.weight}
-                    </TableCell>
-                    <TableCell
-                      sx={{
-                        fontFamily: "Manrope",
-                        fontSize: "14px",
-                        fontWeight: 500,
-                      }}
-                      align="center"
-                    >
-                      {row.size}
-                    </TableCell>
-                    <TableCell
-                      sx={{
-                        fontFamily: "Manrope",
-                        fontSize: "14px",
-                        fontWeight: 500,
-                      }}
-                      align="center"
-                    >
-                      {row.cost}
-                    </TableCell>
-                    <TableCell
-                      sx={{
-                        fontFamily: "Manrope",
-                        fontSize: "14px",
-                        fontWeight: 500,
-                      }}
-                      align="center"
-                    >
-                      {row.used}
-                    </TableCell>
-                    <TableCell
-                      sx={{
-                        fontFamily: "Manrope",
-                        fontSize: "14px",
-                        fontWeight: 500,
-                      }}
-                      align="center"
-                    >
-                      {row.nalichii}
-                    </TableCell>
-                    <TableCell
-                      sx={{
-                        fontFamily: "Manrope",
-                        fontSize: "14px",
-                        fontWeight: 500,
-                      }}
-                      align="center"
-                    >
-                      {row.action}
-                    </TableCell>
-                  </TableRow>
-                ))}
+                          <img
+                            onClick={() => setIsopen2(true)}
+                            style={{ width: "50px" }}
+                            src={row.images.map((e) => e.image)}
+                          />
+                        </TableCell>
+                        <TableCell
+                          sx={{
+                            fontFamily: "Manrope",
+                            fontSize: "14px",
+                            fontWeight: 500,
+                          }}
+                          align="center"
+                        >
+                          {row.weight}
+                        </TableCell>
+                        <TableCell
+                          sx={{
+                            fontFamily: "Manrope",
+                            fontSize: "14px",
+                            fontWeight: 500,
+                          }}
+                          align="center"
+                        >
+                          {row.size}
+                        </TableCell>
+                        <TableCell
+                          sx={{
+                            fontFamily: "Manrope",
+                            fontSize: "14px",
+                            fontWeight: 500,
+                          }}
+                          align="center"
+                        >
+                          {row.cost}
+                        </TableCell>
+                        <TableCell
+                          sx={{
+                            fontFamily: "Manrope",
+                            fontSize: "14px",
+                            fontWeight: 500,
+                          }}
+                          align="center"
+                        >
+                          {row.used}
+                        </TableCell>
+                        <TableCell
+                          sx={{
+                            fontFamily: "Manrope",
+                            fontSize: "14px",
+                            fontWeight: 500,
+                          }}
+                          align="center"
+                        >
+                          {row.nalichii}
+                        </TableCell>
+                        <TableCell
+                          sx={{
+                            fontFamily: "Manrope",
+                            fontSize: "14px",
+                            fontWeight: 500,
+                          }}
+                          align="center"
+                        >
+                          {row.action}
+                        </TableCell>
+                      </TableRow>
+                    ))
+                  : null}
               </TableBody>
             </Table>
           </TableContainer>
+          {!rows ? <div className="rowsNOTdata">Нет данных</div> : null}
         </div>
         <div className="Staff__pagination">
           <div className="Staff__pagination_paginations">
+            {" "}
             <Stack spacing={2}>
               <Pagination
+                onChange={handleChange}
                 count={count}
                 color="primary"
-                onChange={handleChange}
               />
             </Stack>
           </div>
@@ -410,7 +441,13 @@ export default function ProductPage() {
             <div className="Staff__pagination__page_text">
               Показать в таблице
             </div>
-            <div className="Staff__pagination__page_number">{page}</div>
+            <div className="Staff__pagination__page_number">
+              <input
+                value={limit}
+                onChange={(e) => setLimit(e.target.value)}
+                type="number"
+              />
+            </div>
           </div>
         </div>
         {isOpen ? (

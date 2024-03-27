@@ -14,6 +14,7 @@ const INIT_STATE = {
   staffs: [],
   staff: [],
   oneStaff: {},
+  positions: [],
 };
 
 const reducer = (state = INIT_STATE, action) => {
@@ -22,6 +23,8 @@ const reducer = (state = INIT_STATE, action) => {
       return { ...state, staffs: action.payload };
     case STAFF_ACTIONS.GET_ONE_STAFF:
       return { ...state, oneStaff: action.payload };
+    case STAFF_ACTIONS.GET_POSITIONS:
+      return { ...state, positions: action.payload };
     default:
       return state;
   }
@@ -32,12 +35,14 @@ export default function StaffContext({ children }) {
   const [page, setPage] = useState(1);
 
   //! GET ALL STAFF
-  const getStaffs = async (page,limit) => {
+  const getStaffs = async (page, limit) => {
     try {
-      const { data } = await axios(`${API}:8000/api/staff/?page=${page}&limit=${limit}`);
+      const { data } = await axios(
+        `${API}:8000/api/staff/?page=${page}&limit=${limit}`
+      );
       dispatch({
         type: STAFF_ACTIONS.GET__STAFFS,
-        payload: data.results,
+        payload: data,
       });
     } catch (error) {
       console.log(error);
@@ -87,6 +92,19 @@ export default function StaffContext({ children }) {
     }
   };
 
+  //! GET POSITIONS
+  const getPositions = async () => {
+    try {
+      const { data } = await axios(`${API}:8000/api/position/`);
+      dispatch({
+        type: STAFF_ACTIONS.GET_POSITIONS,
+        payload: data,
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const values = {
     getStaffs,
     staffs: state.staffs,
@@ -94,7 +112,9 @@ export default function StaffContext({ children }) {
     deleteStaff,
     editStaff,
     getOneStaff,
-    oneStaff: state.oneStaff
+    oneStaff: state.oneStaff,
+    getPositions,
+    positions: state.positions,
   };
   return (
     <staffContext.Provider value={values}>{children}</staffContext.Provider>
