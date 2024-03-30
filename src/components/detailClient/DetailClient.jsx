@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "./DetailClient.scss";
 import { useClient } from "../../context/ClientContext";
-import { useParams } from "react-router-dom";
+import { Navigate, useNavigate, useParams } from "react-router-dom";
 import img from "../../images/photo library.png";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -14,14 +14,21 @@ import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
 import { useProduct } from "../../context/ProductContext";
 import Modal from "../ModalImage/ModalImage";
+import ModeOutlinedIcon from "@mui/icons-material/ModeOutlined";
+import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined";
+import EditClientModal from "../editClientModal/EditClient";
 
 export default function DetailClient() {
   const { id } = useParams();
-  const { getOneClient, clients, oneClient } = useClient();
+  const { getOneClient, clients, oneClient, deleteClient } = useClient();
   const { products } = useProduct();
+  const navigate = useNavigate()
   // ! HOOKS
 
   const [isOpen, setIsOpen] = useState(false);
+  const [isOpen2, setIsOpen2] = useState(false);
+  const [isOpen3, setIsopen3] = useState(false);
+
   useEffect(() => {
     getOneClient(id);
   }, []);
@@ -38,6 +45,8 @@ export default function DetailClient() {
       phone,
     };
   }
+
+  console.log(oneClient);
 
   const rows1 = [
     // createData1(121212, "12/12/23", "10 000 сом"),
@@ -139,18 +148,47 @@ export default function DetailClient() {
   const onClose = () => {
     setIsOpen(false);
   };
+
+  const closeModal = () => {
+    setIsOpen2(false);
+  };
+
+  const closeModal3 = () => {
+    setIsopen3(false);
+  };
+
+  const deleteStafff = () => {
+    deleteClient(id);
+    navigate(-1);
+    setIsopen3(false);
+  };
   return (
     <div className="Staff">
       <div className="Staff__container">
         <div className="Staff__title">
           <div className="Staff__title_Text">Просмотр информации клиента</div>
+          <div className="Staff__info_btns">
+            <div
+              onClick={() => setIsOpen2(true)}
+              className="Staff__info_btns_btn1"
+            >
+              <ModeOutlinedIcon /> Редактировать
+            </div>
+            <div
+              onClick={() => setIsopen3(true)}
+              className="Staff__info_btns_btn2"
+            >
+              <DeleteOutlinedIcon /> Удалить
+            </div>
+          </div>
+          <div></div>
         </div>
         <div class="client-card">
           <div class="client-photo">
-            {oneClient.image ? (
+            {oneClient.images > [] ? (
               <img
                 onClick={() => setIsOpen(true)}
-                src={oneClient.image}
+                src={oneClient.images[0].image}
                 alt="Client"
               />
             ) : (
@@ -516,6 +554,22 @@ export default function DetailClient() {
           </div>
         </div>
         {isOpen ? <Modal onClose={onClose} oneClient={oneClient} /> : null}
+        {isOpen2 ? (
+          <EditClientModal oneClient={oneClient} closeModal={closeModal} />
+        ) : null}
+        {isOpen3 ? (
+          <div className="modal-overlay">
+            <div className="modal">
+              <h2>Удалить сотрудника {oneClient.full_name}?</h2>
+              <div className="btns">
+                <button onClick={closeModal3}>Отменить</button>
+                <button onClick={deleteStafff} type="submit">
+                  Удалить
+                </button>
+              </div>
+            </div>
+          </div>
+        ) : null}
       </div>
     </div>
   );

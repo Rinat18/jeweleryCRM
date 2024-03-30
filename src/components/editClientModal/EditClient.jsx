@@ -1,20 +1,23 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import img from "../../images/photo library.png";
 import { useProduct } from "../../context/ProductContext";
+import { useNavigate, useParams } from "react-router-dom";
+import { useClient } from "../../context/ClientContext";
+import { convertImageToBlob, convertImageUrlToFile } from "../../consts/const";
 
-export default function AddProductModal({ isOpen, closeModal }) {
-  const { categories, addProduct } = useProduct();
+export default function EditClientModal({ oneClient, closeModal }) {
+  const { editClient } = useClient();
+  const navigate = useNavigate()
 
-  const [category, setCategory] = useState("");
-  const [barcode, setBarcode] = useState("");
-  const [title, setTitle] = useState("");
-  const [sample_number, setSample_number] = useState("");
-  const [weight, setWeight] = useState("");
-  const [size, setSize] = useState("");
-  const [cost_price, setCost_price] = useState("");
-  const [used, setUsed] = useState("");
+  // ! HOOKS
+
+  const [name, setName] = useState("");
+  const [address, setAddress] = useState("");
+  const [inn, setInn] = useState("");
+  const [phone, setPhone] = useState("");
+  const [payment, setPayment] = useState("");
+  const [note, setNote] = useState("");
   const [selectedImage, setSelectedImage] = useState(null);
-
   const [selectedFiles, setSelectedFiles] = useState([]);
 
   const [imm, setImm] = useState({
@@ -25,17 +28,57 @@ export default function AddProductModal({ isOpen, closeModal }) {
     image5: null,
   });
 
+  console.log(oneClient);
+
+  useEffect(() => {
+    if (oneClient) {
+      setName(oneClient.full_name);
+      setPhone(oneClient.phone);
+      setAddress(oneClient.address);
+      setPayment(oneClient.solvency);
+      setNote(oneClient.note);
+      setInn(oneClient.inn);
+
+      if (oneClient.images.length > 0) {
+        const promises = oneClient.images.map((imageData) => {
+          return convertImageUrlToFile(imageData.image);
+        });
+
+        Promise.all(promises)
+          .then((files) => {
+            // files содержит массив файлов для всех изображений
+            // Здесь вы можете обработать каждый файл, например, установить состояние
+            // или выполнить другие действия с файлами
+            setImm({
+              ...imm,
+              image1: files[0], // Устанавливаем первое изображение
+              image2: files[1],
+              image3: files[2],
+              image4: files[3],
+              image5: files[4],
+            });
+            // Если у вас есть другие изображения, обработайте их аналогичным образом
+          })
+          .catch((error) => {
+            console.error("Ошибка при загрузке изображений:", error);
+          });
+      }
+    }
+  }, [oneClient]);
+
+
+  console.log(imm);
+
   const handleSubmit = (e) => {
     e.preventDefault();
     const formData = new FormData();
-    formData.append("category", 5);
-    formData.append("barcode", barcode);
-    formData.append("title", title);
-    formData.append("sample_number", sample_number);
-    formData.append("weight", weight);
-    formData.append("size", size);
-    formData.append("cost_price", cost_price);
-    formData.append("used", used);
+    formData.append("full_name", name);
+    formData.append("phone", phone);
+    formData.append("address", address);
+    formData.append("solvency", payment == "Да" ? true : false);
+    formData.append("inn", inn);
+    formData.append("note", note);
+    formData.append("id", Math.floor(Math.random() * 100));
     if (imm.image1 !== null) {
       formData.append("images[0]image", imm.image1);
       if (imm.image2 !== null) {
@@ -51,8 +94,8 @@ export default function AddProductModal({ isOpen, closeModal }) {
         }
       }
     }
-    console.log(imm);
-    addProduct(formData);
+    editClient(oneClient.id, formData);
+    navigate(-1)
     closeModal();
   };
 
@@ -94,43 +137,6 @@ export default function AddProductModal({ isOpen, closeModal }) {
   const handleFileChange = (event) => {
     const files = event.target.files;
     setSelectedFiles(files);
-    // if (files.length > 0) {
-    //   // setSelectedImage(files[0]);
-    //   setImm({
-    //     ...imm, // Копируем предыдущее состояние
-    //     image1: files[0], // Устанавливаем новое значение для image1
-    //   });
-    //   if (files.length > 1) {
-    //     // setSelectedImage2(files[1]);
-    //     setImm({
-    //       ...imm, // Копируем предыдущее состояние
-    //       image2: files[1], // Устанавливаем новое значение для image1
-    //     });
-    //     if (files.length > 2) {
-    //       // setSelectedImage3(files[2]);
-    //       setImm({
-    //         ...imm, // Копируем предыдущее состояние
-    //         image3: files[2], // Устанавливаем новое значение для image1
-    //       });
-    //       if (files.length > 3) {
-    //         // setSelectedImage4(files[3]);
-    //         setImm({
-    //           ...imm, // Копируем предыдущее состояние
-    //           image4: files[3], // Устанавливаем новое значение для image1
-    //         });
-    //         if (files.length > 4) {
-    //           // setSelectedImage5(files[4]);
-    //           setImm({
-    //             ...imm, // Копируем предыдущее состояние
-    //             image5: files[4], // Устанавливаем новое значение для image1
-    //           });
-    //         }
-    //       }
-    //     }
-    //   }
-    // }
-
-    // Создаем функцию для обновления состояния
     setImm((prevState) => {
       const newState = { ...prevState };
 
@@ -157,77 +163,65 @@ export default function AddProductModal({ isOpen, closeModal }) {
 
     console.log(files.length);
   };
-  console.log(selectedImage);
-
+  console.log(imm);
   return (
     <div>
       <div className="modal-overlay">
         <div className="modal">
-          <h2>Добавить товар</h2>
+          <h2>Изменить клиента</h2>
           <form className="addStaffModalForm" onSubmit={handleSubmit}>
             <div>
               <label>
-                Наименование
+                ФИО*
                 <input
                   type="text"
-                  value={title}
-                  onChange={(e) => setTitle(e.target.value)}
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
                 />
               </label>
               <label>
-                Категория
-                <select
-                  value={category}
-                  onChange={(e) => setCategory(e.target.value)}
-                >
-                  {categories.map((elem) => (
-                    <option value={elem.id}>{elem.name}</option>
-                  ))}
-                </select>
-              </label>
-              <label>
-                Вес
+                Адрес
                 <input
-                  type="number"
-                  value={weight}
-                  onChange={(e) => setWeight(e.target.value)}
+                  type="text"
+                  value={address}
+                  onChange={(e) => setAddress(e.target.value)}
                 />
               </label>
               <label>
-                Б/У
-                <select
-                  type="select"
-                  value={used}
-                  onChange={(e) => setUsed(e.target.value)}
-                >
-                  <option value="true">б/у</option>
-                  <option value="false">новый</option>
-                </select>
+                ИНН
+                <input
+                  type="text"
+                  value={inn}
+                  onChange={(e) => setInn(e.target.value)}
+                />
               </label>
             </div>
             <div>
               <label>
-                Себестоимость
+                Номер телефона*
                 <input
                   type="number"
-                  value={cost_price}
-                  onChange={(e) => setCost_price(e.target.value)}
+                  value={phone}
+                  onChange={(e) => setPhone(e.target.value)}
                 />
               </label>
               <label>
-                Размер
-                <input
-                  type="text"
-                  value={size}
-                  onChange={(e) => setSize(e.target.value)}
-                />
+                Платежеспособность
+                <select
+                  value={payment}
+                  onChange={(e) => setPayment(e.target.value)}
+                >
+                  <option value={payment}>{payment ? "Да" : "Нет"}</option>
+                  <option value="true">Да</option>
+                  <option value="false">Нет</option>
+                </select>
               </label>
               <label>
-                Проба
+                Примечание
                 <input
                   type="text"
-                  value={sample_number}
-                  onChange={(e) => setSample_number(e.target.value)}
+                  value={note}
+                  onChange={(e) => setNote(e.target.value)}
                 />
               </label>
             </div>
@@ -345,11 +339,9 @@ export default function AddProductModal({ isOpen, closeModal }) {
                     </label>
                   </form>
                   {imm.image5 && (
-                    <div
-                      onClick={() => setImm({ ...imm, image5: null })}
-                      className="selectedImg"
-                    >
+                    <div className="selectedImg">
                       <img
+                        onClick={() => setImm({ ...imm, image5: null })}
                         src={URL.createObjectURL(imm.image5)}
                         alt="Выбранное изображение"
                       />
@@ -359,7 +351,6 @@ export default function AddProductModal({ isOpen, closeModal }) {
               </div>
             </div>
           </div>
-          <div></div>
           <button onClick={handleSubmit} type="submit">
             Сохранить
           </button>

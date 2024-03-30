@@ -2,15 +2,28 @@ import React, { useState } from "react";
 import "./Login.scss";
 import eye from "../../images/eye.png";
 import Removeeye from "../../images/remove eye.png";
+import { useAuth } from "../../context/AuthContext";
 
 export default function Login() {
+  const { login, refreshAccessToken } = useAuth();
   // ! STATES
   const [showPassword, setShowPassword] = useState(true);
   const [password, setPassword] = useState(null);
   const [phone, setPhone] = useState(null);
 
   const handleLogin = () => {
-    // if()
+    console.log(phone);
+    const formData = new FormData();
+    formData.append("phone", phone);
+    formData.append("password", password);
+    login(formData);
+  };
+
+  const refresh = () => {
+    const formData = new FormData();
+    formData.append("refresh", localStorage.getItem("refresh"));
+
+    refreshAccessToken(formData);
   };
   return (
     <div className="login">

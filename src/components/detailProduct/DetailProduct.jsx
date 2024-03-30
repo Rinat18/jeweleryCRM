@@ -8,19 +8,19 @@ import { useProduct } from "../../context/ProductContext";
 import usePagination from "@mui/material/usePagination/usePagination";
 import { useNavigate, useParams } from "react-router-dom";
 import EditProductModal from "../editProductModal/EditProduct";
+import Slider from "react-slick";
 export default function DetailProduct() {
-  const [isOpen, setIsopen] = useState(false);
-  const [isOpen2, setIsopen2] = useState(false);
-  const [isOpen3, setIsopen3] = useState(false);
-    const navigate = useNavigate()
   const { id } = useParams();
   const { oneproduct, getOneProduct, deleteProduct, getCategories } =
     useProduct();
+  const [isOpen, setIsopen] = useState(false);
+  const [isOpen2, setIsopen2] = useState(false);
+  const [isOpen3, setIsopen3] = useState(false);
+  const navigate = useNavigate();
   useEffect(() => {
     getOneProduct(id);
     getCategories();
   }, []);
-  console.log(oneproduct.images);
 
   const closeModal = () => {
     setIsopen(false);
@@ -30,8 +30,17 @@ export default function DetailProduct() {
   };
   const deleteStafff = () => {
     deleteProduct(id);
-    navigate("/product")
+    navigate("/product");
     setIsopen3(false);
+  };
+  const vertical__settings = {
+    arrows: false,
+    infinite: false,
+    vertical: true,
+    verticalSwiping: true,
+    swipeToSlide: true,
+    slidesToScroll: 1,
+    slidesToShow: 1,
   };
   return (
     <div className="Staff">
@@ -43,7 +52,11 @@ export default function DetailProduct() {
           <div className="Staff__info_images">
             <div className="Staff__info_images1">
               {oneproduct.images > [] ? (
-                oneproduct.images.map((elem) => <img src={elem.image} alt="" />)
+                <Slider {...vertical__settings}>
+                  {oneproduct.images.map((elem) => (
+                    <img src={elem.image} alt="" />
+                  ))}
+                </Slider>
               ) : (
                 <>
                   <img src={item} alt="" />
@@ -53,10 +66,8 @@ export default function DetailProduct() {
               )}
             </div>
             <div className="Staff__info_images2">
-              {/* {oneproduct.images && (
-              )} */}
               {oneproduct.images > [] ? (
-                <img src={oneproduct.images[0].image} alt="" />
+                <img src={oneproduct.images[0].image} />
               ) : (
                 <img src={item} alt="" />
               )}
@@ -153,7 +164,10 @@ export default function DetailProduct() {
             >
               <ModeOutlinedIcon /> Редактировать
             </div>
-            <div onClick={() => setIsopen3(true)} className="Staff__info_btns_btn2">
+            <div
+              onClick={() => setIsopen3(true)}
+              className="Staff__info_btns_btn2"
+            >
               {" "}
               <DeleteOutlinedIcon /> Удалить
             </div>
@@ -162,18 +176,18 @@ export default function DetailProduct() {
       </div>
       {isOpen ? <EditProductModal closeModal={closeModal} /> : null}
       {isOpen3 ? (
-          <div className="modal-overlay">
-            <div className="modal">
-              <h2>Удалить сотрудника {oneproduct.title}?</h2>
-              <div className="btns">
-                <button onClick={closeModal3}>Отменить</button>
-                <button onClick={deleteStafff} type="submit">
-                  Удалить
-                </button>
-              </div>
+        <div className="modal-overlay">
+          <div className="modal">
+            <h2>Удалить сотрудника {oneproduct.title}?</h2>
+            <div className="btns">
+              <button onClick={closeModal3}>Отменить</button>
+              <button onClick={deleteStafff} type="submit">
+                Удалить
+              </button>
             </div>
           </div>
-        ) : null}
+        </div>
+      ) : null}
     </div>
   );
 }

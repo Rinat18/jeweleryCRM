@@ -9,7 +9,7 @@ const Modal = ({ onClose, oneClient }) => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
   console.log(oneClient);
-  const images = oneClient.image;
+  const images = oneClient.images;
 
   const handlePrev = () => {
     setCurrentImageIndex((prevIndex) =>
@@ -28,7 +28,7 @@ const Modal = ({ onClose, oneClient }) => {
       <div onClick={onClose} className="modal-overlay">
         <div className="modal-content" onClick={(e) => e.stopPropagation()}>
           <img
-            src={images[currentImageIndex]}
+            src={images[currentImageIndex].image}
             alt={`Image ${currentImageIndex + 1}`}
           />
           <button className="prev-button" onClick={handlePrev}>

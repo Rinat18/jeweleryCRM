@@ -15,44 +15,43 @@ import "../staff/Staff.scss";
 import "../product/ProductPage.scss";
 import { useProduct } from "../../context/ProductContext";
 import AddProductModal from "../../components/addProductModal/AddProductModal";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { useClient } from "../../context/ClientContext";
 import AddClient from "../../components/addClientModal/AddClient";
 import ModalForItem from "../../components/ModalImageItem/ModalImageItem";
 
 export default function Client() {
   const { getClients, clients, getOneClient } = useClient();
-  useEffect(() => {
-    getClients(page);
-  }, []);
 
-  console.log(clients);
+  console.log(clients.results);
   // ! HOOKS
   const [page, setPage] = useState(1);
+  const [limit, setLimit] = useState(4);
+
   const [isOpen, setIsopen] = useState(false);
   const [isOpen2, setIsopen2] = useState(false);
   const [isOpen3, setIsopen3] = useState(false);
 
-  const navigate = useNavigate();
-  // !PAGINATION
-  const tables = [1, 2, 3, 4];
-  const itemPerPage = 1;
+  const [imagess, setImagess] = useState("");
 
-  const count = Math.ceil(tables.length / itemPerPage);
-  // console.log(count);
-  const currentData = () => {
-    const begin = (page - 1) * itemPerPage;
-    const end = begin + itemPerPage;
-    return tables.slice(begin, end);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    getClients(page, limit);
+  }, [page, limit]);
+
+  // !PAGINATION
+  const count = Math.ceil(clients.count / limit);
+  const handleChange = (e, value) => {
+    setPage(value);
   };
 
   // !FUNCTIONS
-  const staffs = [1];
   function createData(
     full_name,
     address,
     phone,
-    image,
+    images,
     note,
     solvency,
     inn,
@@ -62,7 +61,7 @@ export default function Client() {
       full_name,
       address,
       phone,
-      image,
+      images,
       note,
       solvency,
       inn,
@@ -70,32 +69,33 @@ export default function Client() {
     };
   }
 
-  const rows = clients.map((elem) =>
-    createData(
-      elem.full_name ? elem.full_name : "Без Имени",
-      elem.address ? elem.address : "Без Адресса",
-      elem.phone ? elem.phone : "Без Номера",
-      elem.image ? elem.image : "Без Фото",
-      elem.note ? elem.note : "Без Описания",
-      elem.solvency ? "Да" : "Нет",
-      elem.inn ? elem.inn : "Без данных",
-      <>
-        <img
-          src={Eye}
-          style={{ cursor: "pointer" }}
-          onClick={() => getOnePage(elem.id)}
-          alt=""
-        />
-      </>
-    )
-  );
-  console.log(rows.solvency);
+  let rows;
+
+  if (clients.results) {
+    rows = clients.results.map((elem) =>
+      createData(
+        elem.full_name ? elem.full_name : "Без Имени",
+        elem.address ? elem.address : "Без Адресса",
+        elem.phone ? elem.phone : "Без Номера",
+        elem.images ? elem.images : "Без Фото",
+        elem.note ? elem.note : "Без Описания",
+        elem.solvency ? "Да" : "Нет",
+        elem.inn ? elem.inn : "Без данных",
+        <>
+          <img
+            src={Eye}
+            style={{ cursor: "pointer" }}
+            onClick={() => getOnePage(elem.id)}
+            alt=""
+          />
+        </>
+      )
+    );
+    console.log(rows);
+  }
+
   const getOnePage = (id) => {
     navigate(`/detailClient/${id}`);
-  };
-  const handleChange = (e, value) => {
-    setPage(value);
-    console.log(value);
   };
 
   const closeModal = () => {
@@ -103,6 +103,11 @@ export default function Client() {
   };
   const closeModal2 = () => {
     setIsopen2(false);
+  };
+
+  const openModal2 = (i) => {
+    setIsopen2(true);
+    setImagess(i);
   };
   return (
     <div className="Staff">
@@ -211,111 +216,124 @@ export default function Client() {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {rows.map((row) => (
-                  <TableRow
-                    key={row.full_name}
-                    sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-                  >
-                    <TableCell
-                      sx={{
-                        fontFamily: "Manrope",
-                        fontSize: "14px",
-                        fontWeight: 500,
-                      }}
-                      align="center"
-                      component="th"
-                      scope="row"
-                    >
-                      {row.full_name}
-                    </TableCell>
-                    <TableCell
-                      sx={{
-                        fontFamily: "Manrope",
-                        fontSize: "14px",
-                        fontWeight: 500,
-                      }}
-                      align="center"
-                    >
-                      {row.address}
-                    </TableCell>
-                    <TableCell
-                      sx={{
-                        fontFamily: "Manrope",
-                        fontSize: "14px",
-                        fontWeight: 500,
-                      }}
-                      align="center"
-                    >
-                      {row.phone}
-                    </TableCell>
-                    <TableCell
-                      sx={{
-                        fontFamily: "Manrope",
-                        fontSize: "14px",
-                        fontWeight: 500,
-                      }}
-                      align="center"
-                    >
-                      {row.image == "Без Фото" ? (
-                        "Нет фотографии"
-                      ) : (
-                        <img style={{ width: "50px" }} src={row.image} />
-                      )}
-                    </TableCell>
-                    <TableCell
-                      sx={{
-                        fontFamily: "Manrope",
-                        fontSize: "14px",
-                        fontWeight: 500,
-                      }}
-                      align="center"
-                    >
-                      {row.note}
-                    </TableCell>
-                    <TableCell
-                      sx={{
-                        fontFamily: "Manrope",
-                        fontSize: "14px",
-                        fontWeight: 500,
-                      }}
-                      align="center"
-                    >
-                      {row.solvency}
-                    </TableCell>
-                    <TableCell
-                      sx={{
-                        fontFamily: "Manrope",
-                        fontSize: "14px",
-                        fontWeight: 500,
-                      }}
-                      align="center"
-                    >
-                      {row.inn}
-                    </TableCell>
-                    <TableCell
-                      sx={{
-                        fontFamily: "Manrope",
-                        fontSize: "14px",
-                        fontWeight: 500,
-                      }}
-                      align="center"
-                    >
-                      {row.action}
-                    </TableCell>
-                  </TableRow>
-                ))}
+                {rows
+                  ? rows.map((row) => (
+                      <TableRow
+                        key={row.full_name}
+                        sx={{
+                          "&:last-child td, &:last-child th": { border: 0 },
+                        }}
+                      >
+                        <TableCell
+                          sx={{
+                            fontFamily: "Manrope",
+                            fontSize: "14px",
+                            fontWeight: 500,
+                          }}
+                          align="center"
+                          component="th"
+                          scope="row"
+                        >
+                          {row.full_name}
+                        </TableCell>
+                        <TableCell
+                          sx={{
+                            fontFamily: "Manrope",
+                            fontSize: "14px",
+                            fontWeight: 500,
+                          }}
+                          align="center"
+                        >
+                          {row.address}
+                        </TableCell>
+                        <TableCell
+                          sx={{
+                            fontFamily: "Manrope",
+                            fontSize: "14px",
+                            fontWeight: 500,
+                          }}
+                          align="center"
+                        >
+                          {row.phone}
+                        </TableCell>
+                        <TableCell
+                          sx={{
+                            fontFamily: "Manrope",
+                            fontSize: "14px",
+                            fontWeight: 500,
+                          }}
+                          align="center"
+                        >
+                          {row.images[0] ? (
+                            <img
+                              onClick={() => openModal2(row.images)}
+                              style={{ width: "50px" }}
+                              src={row.images[0].image}
+                            />
+                          ) : (
+                            <div>Нету фотографии</div>
+                          )}
+                        </TableCell>
+                        <TableCell
+                          sx={{
+                            fontFamily: "Manrope",
+                            fontSize: "14px",
+                            fontWeight: 500,
+                          }}
+                          align="center"
+                        >
+                          {row.note}
+                        </TableCell>
+                        <TableCell
+                          sx={{
+                            fontFamily: "Manrope",
+                            fontSize: "14px",
+                            fontWeight: 500,
+                          }}
+                          align="center"
+                        >
+                          {row.solvency}
+                        </TableCell>
+                        <TableCell
+                          sx={{
+                            fontFamily: "Manrope",
+                            fontSize: "14px",
+                            fontWeight: 500,
+                          }}
+                          align="center"
+                        >
+                          {row.inn}
+                        </TableCell>
+                        <TableCell
+                          sx={{
+                            fontFamily: "Manrope",
+                            fontSize: "14px",
+                            fontWeight: 500,
+                          }}
+                          align="center"
+                        >
+                          {row.action}
+                        </TableCell>
+                      </TableRow>
+                    ))
+                  : null}
               </TableBody>
             </Table>
           </TableContainer>
+          {rows ? (
+            rows.length == 0 ? (
+              <div className="rowsNOTdata">Нет данных</div>
+            ) : null
+          ) : null}
         </div>
         <div className="Staff__pagination">
           <div className="Staff__pagination_paginations">
             {" "}
             <Stack spacing={2}>
               <Pagination
+                onChange={handleChange}
                 count={count}
                 color="primary"
-                onChange={handleChange}
               />
             </Stack>
           </div>
@@ -323,11 +341,19 @@ export default function Client() {
             <div className="Staff__pagination__page_text">
               Показать в таблице
             </div>
-            <div className="Staff__pagination__page_number">{page}</div>
+            <div className="Staff__pagination__page_number">
+              <input
+                value={limit}
+                onChange={(e) => setLimit(e.target.value)}
+                type="number"
+              />
+            </div>
           </div>
         </div>
         {isOpen ? <AddClient isOpen={isOpen} closeModal={closeModal} /> : null}
-        {isOpen2 ? <ModalForItem closeModal2={closeModal2} /> : null}
+        {isOpen2 ? (
+          <ModalForItem imagess={imagess} closeModal2={closeModal2} />
+        ) : null}
       </div>
     </div>
   );

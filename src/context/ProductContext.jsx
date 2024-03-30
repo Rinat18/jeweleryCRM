@@ -31,10 +31,10 @@ export default function ProductContext({ children }) {
   const [search, setSearch] = useState("");
 
   //! GET ALL PRODUCT
-  const getProducts = async (page, limit, category, in_stock, search) => {
+  const getProducts = async () => {
     try {
       const { data } = await axios(
-        `${API}:8000/api/products/?page=${page}&limit=${limit}&category=${category}&in_stock=${in_stock}$search=${search}`
+        `${API}:8000/api/products/${window.location.search}`
       );
       dispatch({
         type: PRODUCT_ACTIONS.GET_PRODUCTS,

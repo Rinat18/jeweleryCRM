@@ -39,10 +39,9 @@ function EditEmployeeModal({ closeModal }) {
     formData.append("percentage_of_the_sale", percent);
     formData.append("password", "12345678");
     formData.append("confirm_password", "12345678");
-    editStaff(46, formData);
+    editStaff(oneStaff.id, formData);
     // closeModal();
   };
-  console.log(positions);
   return (
     <div className="modal-overlay">
       <div className="modal">
@@ -90,7 +89,12 @@ function EditEmployeeModal({ closeModal }) {
                 name=""
                 id=""
               >
-                <option value="">Выберите должность</option>
+                {oneStaff.position ? (
+                  <option value={oneStaff.position.id}>
+                    {" "}
+                    {oneStaff.position.name}
+                  </option>
+                ) : null}
 
                 {positions &&
                   positions.map((elem) => (

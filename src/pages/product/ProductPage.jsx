@@ -15,30 +15,42 @@ import "../staff/Staff.scss";
 import "./ProductPage.scss";
 import { useProduct } from "../../context/ProductContext";
 import AddProductModal from "../../components/addProductModal/AddProductModal";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import ModalForItem from "../../components/ModalImageItem/ModalImageItem";
+import { TextField } from "@mui/material";
 
 export default function ProductPage() {
   const { products, getProducts, getCategories, categories } = useProduct();
 
-  // console.log(categories);
   // ! HOOKS
   const [page, setPage] = useState(1);
   const [category, setCategory] = useState("");
   const [limit, setLimit] = useState(4);
-  const [inStock, setInStock] = useState("");
-  const [search, setSearch] = useState("");
+  const [in_stock, setIn_stock] = useState("");
   const [isOpen, setIsopen] = useState(false);
+
   const [isOpen2, setIsopen2] = useState(false);
   const [isOpen3, setIsopen3] = useState(false);
+
+  const [searchParams, setSearchParams] = useSearchParams();
+  const [search, setSearch] = useState("");
 
   const navigate = useNavigate();
 
   useEffect(() => {
-    getProducts(page, limit, category, inStock, search);
+    setSearchParams({
+      search,
+      category,
+      in_stock,
+      page,
+      limit,
+    });
+  }, [page, limit, category, in_stock, search]);
+
+  useEffect(() => {
+    getProducts();
     getCategories();
-    console.log(search);
-  }, [page, limit, category, inStock, search]);
+  }, [page, limit, category, in_stock, search]);
   // !PAGINATION
   const count = Math.ceil(products.count / limit);
   const handleChange = (e, value) => {
@@ -74,9 +86,6 @@ export default function ProductPage() {
       action,
     };
   }
-
-  console.log(inStock);
-  console.log(products);
   let rows;
 
   if (products.results) {
@@ -104,7 +113,6 @@ export default function ProductPage() {
     );
   }
 
-  console.log(rows);
   const getOnePage = (id) => {
     navigate(`/detail/${id}`);
   };
@@ -112,13 +120,14 @@ export default function ProductPage() {
   const closeModal = () => {
     setIsopen(false);
   };
+
+  console.log(rows);
   return (
     <div className="Staff">
       <div className="Staff__container">
         <div className="Staff__title">
           <div className="Staff__title_Text">Товары</div>
           <div onClick={() => setIsopen(true)} className="Staff__title_btn">
-            {" "}
             <img src={plus} alt="" /> Добавить товар
           </div>
         </div>
@@ -133,14 +142,14 @@ export default function ProductPage() {
               <option value="">Выберите категрию</option>
 
               {categories.map((elem) => (
-                <option value={elem.id}>{elem.slug}</option>
+                <option value={elem.id}>{elem.name}</option>
               ))}
-              <option value="Necklace">Ожерелье</option>
-              <option value="Earrings">Серьги</option>
             </select>
             <select
               onChange={(e) =>
-                e.target.value == "true" ? setInStock(true) : setInStock(false)
+                e.target.value == "true"
+                  ? setIn_stock(true)
+                  : setIn_stock(false)
               }
               className="Staff__filtration_select_select2"
             >
@@ -352,11 +361,14 @@ export default function ProductPage() {
                           {/* {row.images.map((e) => (
                         <></>
                       ))} */}
-                          <img
-                            onClick={() => setIsopen2(true)}
-                            style={{ width: "50px" }}
-                            src={row.images.map((e) => e.image)}
-                          />
+
+                          {row.images[0] ? (
+                            <img
+                              onClick={() => setIsopen2(true)}
+                              style={{ width: "50px" }}
+                              src={row.images[0].image}
+                            />
+                          ) : null}
                         </TableCell>
                         <TableCell
                           sx={{
@@ -424,7 +436,11 @@ export default function ProductPage() {
               </TableBody>
             </Table>
           </TableContainer>
-          {!rows ? <div className="rowsNOTdata">Нет данных</div> : null}
+          {rows ? (
+            rows.length == 0 ? (
+              <div className="rowsNOTdata">Нет данных</div>
+            ) : null
+          ) : null}
         </div>
         <div className="Staff__pagination">
           <div className="Staff__pagination_paginations">

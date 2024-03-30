@@ -24,12 +24,14 @@ export default function ClientContext({ children }) {
   const [page, setPage] = useState(1);
 
   //! GET ALL CLIENTS
-  const getClients = async (page) => {
+  const getClients = async (page, limit) => {
     try {
-      const { data } = await axios(`${API}:8000/api/clients/?page=${page}`);
+      const { data } = await axios(
+        `${API}:8000/api/clients/?page=${page}&limit=${limit}`
+      );
       dispatch({
         type: CLIENTS_ACTIONS.GET_CLIENTS,
-        payload: data.results,
+        payload: data,
       });
     } catch (error) {
       console.log(error);
@@ -51,7 +53,6 @@ export default function ClientContext({ children }) {
   const getOneClient = async (id) => {
     try {
       const { data } = await axios(`${API}:8000/api/clients/${id}/`);
-      console.log(data);
       dispatch({
         type: CLIENTS_ACTIONS.GET_ONE_CLIENT,
         payload: data,
@@ -89,7 +90,6 @@ export default function ClientContext({ children }) {
     deleteClient,
     oneClient: state.oneClient,
     clients: state.clients,
-
   };
   return (
     <clientContext.Provider value={values}>{children}</clientContext.Provider>

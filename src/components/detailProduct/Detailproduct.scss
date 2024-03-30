@@ -31,6 +31,12 @@
       display: flex;
       flex-direction: column;
       align-items: center;
+      width: 100px;
+      height: 400px;
+      overflow: hidden;
+      .slick-slider{
+        width: 92%;
+      }
       img {
         width: 82px;
         height: 52px;
@@ -130,7 +136,6 @@
     &__details {
       display: flex;
       justify-content: space-between;
-      width: 320px;
       margin-top: 20px;
       &__keys {
         display: flex;

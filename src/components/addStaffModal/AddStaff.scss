@@ -122,13 +122,17 @@ button:hover {
     justify-content: center;
     align-items: center;
     width: 100%;
+    height: 100%;
     margin-top: 0;
   }
   label {
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-bottom: 0;
+    margin-bottom: 0;    
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
   }
   input {
     display: none;
@@ -159,7 +163,10 @@ input {
   border-radius: 5px;
   gap: 10px;
   margin-left: 30px;
+  
   &__box1 {
+    border-radius: 5px;
+
     width: 120px;
     height: 80px;
     display: flex;

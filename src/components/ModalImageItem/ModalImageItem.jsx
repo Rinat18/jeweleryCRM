@@ -1,13 +1,13 @@
-import React, {useState } from "react";
+import React, { useState } from "react";
 import "./ModalImageItem.scss";
 import Left from "../../images/arrow-left.png";
 import Right from "../../images/arrow-right.png";
 
-const ModalForItem = ({ onClose, oneClient }) => {
+const ModalForItem = ({ onClose, oneClient, imagess }) => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
   console.log(oneClient);
-  const images = oneClient.image;
+  const images = imagess;
 
   const handlePrev = () => {
     setCurrentImageIndex((prevIndex) =>
@@ -26,7 +26,7 @@ const ModalForItem = ({ onClose, oneClient }) => {
       <div onClick={onClose} className="modal-overlay">
         <div className="modal-content" onClick={(e) => e.stopPropagation()}>
           <img
-            src={images[currentImageIndex]}
+            src={images[currentImageIndex].image}
             alt={`Image ${currentImageIndex + 1}`}
           />
           <button className="prev-button" onClick={handlePrev}>

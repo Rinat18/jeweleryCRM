@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import img from "../../images/photo library.png";
 import { useProduct } from "../../context/ProductContext";
 import { useParams } from "react-router-dom";
+import { convertImageUrlToFile } from "../../consts/const";
 
 export default function EditProductModal({ isOpen, closeModal }) {
   const { categories, oneproduct, editProduct } = useProduct();
@@ -36,27 +37,46 @@ export default function EditProductModal({ isOpen, closeModal }) {
       setUsed(oneproduct.used);
       setImages(oneproduct.images);
       if (oneproduct.images.length > 0) {
-        setSelectedImage(oneproduct.images[0].image);
-        if (oneproduct.images.length > 1) {
-          setSelectedImage2(oneproduct.images[1].image);
-        }
-        if (oneproduct.images > 2) {
-          setSelectedImage3(oneproduct.images[2].image);
-        }
-        if (oneproduct.images > 3) {
-          setSelectedImage4(oneproduct.images[3].image);
-        }
-        if (oneproduct.images > 4) {
-          setSelectedImage5(oneproduct.images[4].image);
-        }
+        const promises = oneproduct.images.map((imageData) => {
+          return convertImageUrlToFile(imageData.image);
+        });
+
+        Promise.all(promises)
+          .then((files) => {
+            // files содержит массив файлов для всех изображений
+            // Здесь вы можете обработать каждый файл, например, установить состояние
+            // или выполнить другие действия с файлами
+            setImm({
+              ...imm,
+              image1: files[0], // Устанавливаем первое изображение
+              image2: files[1],
+              image3: files[2],
+              image4: files[3],
+              image5: files[4],
+            });
+            // Если у вас есть другие изображения, обработайте их аналогичным образом
+          })
+          .catch((error) => {
+            console.error("Ошибка при загрузке изображений:", error);
+          });
       }
     }
   }, [oneproduct]);
 
+  const [selectedFiles, setSelectedFiles] = useState([]);
+
+  const [imm, setImm] = useState({
+    image1: null,
+    image2: null,
+    image3: null,
+    image4: null,
+    image5: null,
+  });
+
   const handleSubmit = (e) => {
     e.preventDefault();
     const formData = new FormData();
-    formData.append("category", +category);
+    formData.append("category", 5);
     formData.append("barcode", barcode);
     formData.append("title", title);
     formData.append("sample_number", sample_number);
@@ -64,97 +84,90 @@ export default function EditProductModal({ isOpen, closeModal }) {
     formData.append("size", size);
     formData.append("cost_price", cost_price);
     formData.append("used", used);
-    formData.append("images", images);
-    // console.log(formData.barcode);
-    console.log(images);
+    if (imm.image1 !== null) {
+      formData.append("images[0]image", imm.image1);
+      if (imm.image2 !== null) {
+        formData.append("images[1]image", imm.image2);
+        if (imm.image3 !== null) {
+          formData.append("images[2]image", imm.image3);
+          if (imm.image4 !== null) {
+            formData.append("images[3]image", imm.image4);
+            if (imm.image5 !== null) {
+              formData.append("images[4]image", imm.image5);
+            }
+          }
+        }
+      }
+    }
+    console.log(imm);
     editProduct(id, formData);
-    // closeModal();
+    closeModal();
   };
-  console.log(isOpen);
 
   const handleImageChange = (event) => {
     const file = event.target.files[0];
-    const reader = new FileReader();
-
-    reader.onloadend = () => {
-      setSelectedImage(reader.result);
-      setImages(...images, {
-        id: Math.random(),
-        image: reader.result,
-        product: Math.floor(Math.random() * 5),
-      });
-    };
-
-    if (file) {
-      reader.readAsDataURL(file);
-    }
+    setImm({
+      ...imm, // Копируем предыдущее состояние
+      image1: file, // Устанавливаем новое значение для image1
+    });
+    setSelectedImage(file);
   };
 
   const handleImageChange2 = (event) => {
     const file = event.target.files[0];
     const reader = new FileReader();
-
-    reader.onloadend = () => {
-      setSelectedImage2(reader.result);
-      setImages(...images, {
-        id: Math.random(),
-        image: reader.result,
-        product: Math.floor(Math.random() * 5),
-      });
-    };
-
-    if (file) {
-      reader.readAsDataURL(file);
-    }
+    setSelectedImage2(file);
   };
 
   const handleImageChange3 = (event) => {
     const file = event.target.files[0];
-    const reader = new FileReader();
-
-    reader.onloadend = () => {
-      setSelectedImage3(reader.result);
-      setImages(...images, reader.result);
-    };
-
-    if (file) {
-      reader.readAsDataURL(file);
-    }
+    setSelectedImage3(file);
   };
 
   const handleImageChange4 = (event) => {
     const file = event.target.files[0];
-    const reader = new FileReader();
-
-    reader.onloadend = () => {
-      setSelectedImage4(reader.result);
-      setImages(...images, reader.result);
-    };
-
-    if (file) {
-      reader.readAsDataURL(file);
-    }
+    setSelectedImage4(file);
   };
 
   const handleImageChange5 = (event) => {
     const file = event.target.files[0];
-    const reader = new FileReader();
-
-    reader.onloadend = () => {
-      setSelectedImage5(reader.result);
-      setImages(...images, reader.result);
-    };
-
-    if (file) {
-      reader.readAsDataURL(file);
-    }
+    setSelectedImage5(file);
   };
-  console.log(images);
 
+  const handleFileChange = (event) => {
+    const files = event.target.files;
+    setSelectedFiles(files);
+    setImm((prevState) => {
+      const newState = { ...prevState };
+
+      if (files.length > 0) {
+        newState.image1 = files[0];
+
+        if (files.length > 1) {
+          newState.image2 = files[1];
+
+          if (files.length > 2) {
+            newState.image3 = files[2];
+            if (files.length > 3) {
+              newState.image4 = files[3];
+              if (files.length > 4) {
+                newState.image5 = files[4];
+              }
+            }
+          }
+        }
+      }
+
+      return newState;
+    });
+
+    console.log(files.length);
+  };
+  console.log(selectedImage);
   const deleteImg = (id) => {
     if (selectedImage.id == id) {
       setSelectedImage(null);
-      setImages([])
+      setImages([]);
     }
   };
   return (
@@ -254,19 +267,22 @@ export default function EditProductModal({ isOpen, closeModal }) {
                   <label class="input-file">
                     <input
                       type="file"
-                      name="file"
+                      name="files"
                       onChange={handleImageChange}
                     />
                     <img src={img} />
                     <span class="input-file-btn">Выберите файл</span>
                   </label>
                 </form>
-                {selectedImage && (
+                {imm.image1 && (
                   <div
-                    onClick={() => deleteImg(selectedImage.id)}
+                    onClick={() => setImm({ ...imm, image1: null })}
                     className="selectedImg"
                   >
-                    <img src={selectedImage} alt="Выбранное изображение" />
+                    <img
+                      src={URL.createObjectURL(imm.image1)}
+                      alt="Выбранное изображение"
+                    />
                   </div>
                 )}
               </div>
@@ -283,12 +299,15 @@ export default function EditProductModal({ isOpen, closeModal }) {
                       <span class="input-file-btn">Выберите файл</span>
                     </label>
                   </form>
-                  {selectedImage2 && (
+                  {imm.image2 && (
                     <div
-                      onClick={() => deleteImg(selectedImage2.id)}
+                      onClick={() => setImm({ ...imm, image2: null })}
                       className="selectedImg"
                     >
-                      <img src={selectedImage2} alt="Выбранное изображение" />
+                      <img
+                        src={URL.createObjectURL(imm.image2)}
+                        alt="Выбранное изображение"
+                      />
                     </div>
                   )}
                 </div>
@@ -304,12 +323,15 @@ export default function EditProductModal({ isOpen, closeModal }) {
                       <span class="input-file-btn">Выберите файл</span>
                     </label>
                   </form>
-                  {selectedImage3 && (
+                  {imm.image3 && (
                     <div
-                      onClick={() => setSelectedImage3(null)}
+                      onClick={() => setImm({ ...imm, image3: null })}
                       className="selectedImg"
                     >
-                      <img src={selectedImage3} alt="Выбранное изображение" />
+                      <img
+                        src={URL.createObjectURL(imm.image3)}
+                        alt="Выбранное изображение"
+                      />
                     </div>
                   )}
                 </div>
@@ -325,12 +347,15 @@ export default function EditProductModal({ isOpen, closeModal }) {
                       <span class="input-file-btn">Выберите файл</span>
                     </label>
                   </form>
-                  {selectedImage4 && (
+                  {imm.image4 && (
                     <div
-                      onClick={() => setSelectedImage4(null)}
+                      onClick={() => setImm({ ...imm, image4: null })}
                       className="selectedImg"
                     >
-                      <img src={selectedImage4} alt="Выбранное изображение" />
+                      <img
+                        src={URL.createObjectURL(imm.image4)}
+                        alt="Выбранное изображение"
+                      />
                     </div>
                   )}
                 </div>
@@ -340,18 +365,22 @@ export default function EditProductModal({ isOpen, closeModal }) {
                       <input
                         type="file"
                         name="file"
-                        onChange={handleImageChange5}
+                        multiple
+                        onChange={handleFileChange}
                       />
                       <img src={img} />
-                      <span class="input-file-btn">Выберите файл</span>
+                      <span class="input-file-btn">Выберите файлы</span>
                     </label>
                   </form>
-                  {selectedImage5 && (
+                  {imm.image5 && (
                     <div
-                      onClick={() => setSelectedImage5(null)}
+                      onClick={() => setImm({ ...imm, image5: null })}
                       className="selectedImg"
                     >
-                      <img src={selectedImage5} alt="Выбранное изображение" />
+                      <img
+                        src={URL.createObjectURL(imm.image5)}
+                        alt="Выбранное изображение"
+                      />
                     </div>
                   )}
                 </div>
