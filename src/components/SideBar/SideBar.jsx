@@ -60,7 +60,7 @@ export default function SideBar() {
               Инвентаризация
             </div>
           </div>
-          <div className="sideBar__container__text__sites">
+          <div onClick={() => navigate("/cash")} className="sideBar__container__text__sites">
             <img src={Cash} className="" />
             <div className="sideBar__container__text__sites__text">Касса</div>
           </div>

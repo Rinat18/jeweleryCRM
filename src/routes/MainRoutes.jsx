@@ -8,6 +8,7 @@ import ProductPage from "../pages/product/ProductPage";
 import DetailProduct from "../components/detailProduct/DetailProduct";
 import Client from "../pages/client/Client";
 import DetailClient from "../components/detailClient/DetailClient";
+import CashPage from "../pages/cash/CashPage";
 
 export default function MainRoutes() {
   const NOT_AUTH = [
@@ -57,6 +58,14 @@ export default function MainRoutes() {
       element: (
         <Layout>
           <DetailClient />
+        </Layout>
+      ),
+    },
+    {
+      link: "/cash",
+      element: (
+        <Layout>
+          <CashPage />
         </Layout>
       ),
     },

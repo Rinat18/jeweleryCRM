@@ -29,6 +29,13 @@
             font-family: Manrope
         }
 
+        &_btns{
+            display: flex;
+            div{
+                margin-left: 10px;
+            }
+        }
+
         // .Staff__title_btn
 
         &_btn {
@@ -45,6 +52,35 @@
             img{
                 margin-right: 5px;
             }
+        }
+    }
+
+    &__podTitle{
+        display: flex;
+        width: 260px;
+        border-bottom: 1px solid  #CED0D2;
+        margin-top: 30px;
+        padding-bottom: 10px;
+        &__nal{
+
+            display: flex;
+            flex-direction: column;
+
+            &_text{
+                font-size: 14px;
+                font-weight: 500;
+            }
+
+            &_number{
+                font-weight: 600;
+                font-size: 20px;
+            }
+        }
+        &__bezNal{
+
+            display: flex;
+            flex-direction: column;
+            margin-left: 20px;
         }
     }
 

@@ -21,6 +21,11 @@ export const token = {
     GET_TOKEN: "GET_TOKEN"
 }
 
+export const CASH_LIST = {
+    GET_LIST: "GET_LIST",
+
+
+}
 
 
 // ! ПРИНИМАЕМ ИЗ БЕКА URL ПЕРВОДИМ ЕГО В FILE 
