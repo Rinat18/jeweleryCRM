@@ -11,6 +11,7 @@ import Eye from "../../images/eyeBlue.png";
 import { useCash } from "../../context/CashBoxContext";
 import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
+import { useNavigate } from "react-router-dom";
 
 export default function CashPage() {
   const { list, getList } = useCash();
@@ -22,6 +23,7 @@ export default function CashPage() {
   const [limit, setLimit] = useState(4);
   const [in_stock, setIn_stock] = useState("");
   const [search, setSearch] = useState("");
+  const navigate = useNavigate();
 
   useEffect(() => {
     getList(page, limit);
@@ -65,11 +67,13 @@ export default function CashPage() {
         elem.operation.operation_type.name
           ? elem.operation.operation_type.name
           : "Без название",
-        elem.created_at ? elem.created_at : "Без название",
-        elem.operation.name ? elem.operation.name : "Без название",
-        elem.total_sum ? elem.total_sum : "Без название",
-        elem.payment_type.slug ? elem.payment_type.slug : "Без название",
-        elem.operation.name ? elem.operation.name : "Без название"
+        elem.created_at ? elem.created_at.slice(0, 10) : "Без даты",
+        elem.operation.name ? elem.operation.name : "Без операции",
+        elem.total_sum ? elem.total_sum : "Без суммы",
+        elem.operation.operation_type.name
+          ? elem.operation.operation_type.name
+          : "Без название",
+        <>Lorem ipsum dolor sit amet consectetur.</>
       )
     );
   }
@@ -86,7 +90,10 @@ export default function CashPage() {
           <div className="Staff__title_Text">Касса</div>
           <div className="Staff__title_btns">
             {" "}
-            <div onClick={() => setIsopen(true)} className="Staff__title_btn">
+            <div
+              onClick={() => navigate("/addIncome")}
+              className="Staff__title_btn"
+            >
               {" "}
               <img src={plus} alt="" /> Добавить приход
             </div>

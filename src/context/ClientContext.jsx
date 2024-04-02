@@ -22,6 +22,7 @@ const reducer = (state = INIT_STATE, action) => {
 export default function ClientContext({ children }) {
   const [state, dispatch] = useReducer(reducer, INIT_STATE);
   const [page, setPage] = useState(1);
+  const [limit, setLimit] = useState(4)
 
   //! GET ALL CLIENTS
   const getClients = async (page, limit) => {

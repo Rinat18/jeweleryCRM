@@ -7,8 +7,6 @@ export const useCash = () => useContext(cashBox);
 
 const INIT_STATE = {
   list: [],
-  user: [],
-  oneUser: {},
 };
 
 const reducer = (state = INIT_STATE, action) => {
@@ -23,6 +21,8 @@ const reducer = (state = INIT_STATE, action) => {
 
 export default function CashBoxContext({ children }) {
   const [state, dispatch] = useReducer(reducer, INIT_STATE);
+
+  // ! GET TO HOME PAGE
 
   const getList = async (page, limit) => {
     try {
@@ -39,10 +39,29 @@ export default function CashBoxContext({ children }) {
     }
   };
 
+  // ! ADD TO SALE
+
+  const addToSale = async () => {};
+
+  // ! GET OPERATIONS
+
+  const getOperations = async () => {
+    try {
+      const { data } = await axios(`${API}:8000/api/`);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  // ! GET OPERATIONS TYPES
+  const getOperationTypes = async () => {};
+
+  // ! GET PAYMENT TYPES
+  const getPaymentTypes = async () => {};
 
   const values = {
     getList,
-    list: state.list
+    list: state.list,
   };
   return <cashBox.Provider value={values}>{children}</cashBox.Provider>;
 }

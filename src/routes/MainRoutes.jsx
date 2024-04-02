@@ -9,6 +9,7 @@ import DetailProduct from "../components/detailProduct/DetailProduct";
 import Client from "../pages/client/Client";
 import DetailClient from "../components/detailClient/DetailClient";
 import CashPage from "../pages/cash/CashPage";
+import CashAddIncomePage from "../pages/cash/CashAddIncomePage";
 
 export default function MainRoutes() {
   const NOT_AUTH = [
@@ -66,6 +67,14 @@ export default function MainRoutes() {
       element: (
         <Layout>
           <CashPage />
+        </Layout>
+      ),
+    },
+    {
+      link: "/addIncome",
+      element: (
+        <Layout>
+          <CashAddIncomePage />
         </Layout>
       ),
     },

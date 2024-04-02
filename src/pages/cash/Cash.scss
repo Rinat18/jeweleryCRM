@@ -1,0 +1,274 @@
+.formToAddIncome {
+  // .formToAddIncome__types
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  box-shadow: 0px 0px 4px 0px #5f5b5b26;
+  background: #fffffc;
+  border-radius: 10px;
+  padding: 30px;
+  &__types {
+    // .formToAddIncome__types_sell
+    display: flex;
+    background: #f4f5f7;
+    width: 43%;
+    border-radius: 100px;
+    div {
+      width: 90px;
+      height: 30px;
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 100px;
+    }
+
+    &_Active {
+      background: #576ed0;
+      color: #fffffc;
+    }
+    &_sell {
+    }
+
+    // .formToAddIncome__types_installment
+
+    &_installment {
+    }
+
+    // .formToAddIncome__types_pay
+
+    &_pay {
+    }
+
+    // .formToAddIncome__types_exchange
+
+    &_exchange {
+    }
+  }
+
+  // .formToAddIncome__clientInputs
+
+  &__clientInputs {
+    display: flex;
+    margin-top: 30px;
+    align-items: end;
+    &__client {
+      p {
+        color: #6e6c6a;
+        font-size: 14px;
+      }
+
+      div {
+        position: relative;
+        input {
+          width: 250px;
+          height: 40px;
+          background: #f6f6f6;
+          border-radius: 20px;
+          border: none;
+          padding-left: 40px;
+          margin-top: 10px;
+        }
+        img {
+          position: absolute;
+          left: 15px;
+          top: 20px;
+        }
+      }
+    }
+
+    &__manager {
+      margin-left: 40px;
+      p {
+        color: #6e6c6a;
+        font-size: 14px;
+      }
+      input {
+        width: 230px;
+        height: 40px;
+        background: #f6f6f6;
+        border-radius: 20px;
+        border: none;
+        padding-left: 20px;
+        margin-top: 10px;
+      }
+      select {
+        width: 250px;
+        height: 40px;
+        background: #f6f6f6;
+        border-radius: 20px;
+        border: none;
+        margin-top: 10px;
+      }
+    }
+
+    &_delete {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 45px;
+      height: 45px;
+      background: #6e6c6a;
+      border-radius: 100px;
+      margin-left: 50px;
+      align-items: center;
+    }
+  }
+
+  &__clientInputs2 {
+    display: flex;
+  }
+
+  &__addClient {
+    margin-top: 20px;
+  }
+
+  // .formToAddIncome__paymentType
+
+  &__paymentType {
+    display: flex;
+    margin-top: 40px;
+    justify-content: space-between;
+    width: 90%;
+    select {
+      border: none;
+    }
+    div {
+      color: #576ed0;
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+      img {
+        color: #576ed0;
+      }
+    }
+  }
+}
+
+.formTotalSum {
+  display: flex;
+  width: 106%;
+  justify-content: space-between;
+  margin-top: 80px;
+  border-top: 2px solid #ced0d2;
+  padding-top: 20px;
+  &_tovars {
+    font-size: 16px;
+    color: #6e6c6a;
+  }
+  &_cost {
+    font-size: 22px;
+    color: #2a2826;
+    font-weight: 500;
+  }
+}
+
+.formToAddIncomee {
+  width: 60%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.btnToSubmit {
+  width: 250px;
+  background: #576ed0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 45px;
+  color: #fffffc;
+  font-weight: 800;
+  border-radius: 40px;
+  margin-top: 50px;
+}
+.forms {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  margin-top: 40px;
+}
+
+.blockToView {
+  // .blockToView__Left
+  height: 50%;
+  display: flex;
+  padding: 20px;
+  width: 30%;
+  box-shadow: 0px 0px 4px 0px #5f5b5b26;
+  background: #fffffc;
+  border-radius: 10px;
+  transform: translateX("-200");
+  transition: 2s;
+  &__Left {
+    display: flex;
+    flex-direction: column;
+    width: 50%;
+    .notImage {
+      height: 130px;
+      width: 130px;
+      img {
+        height: 30px;
+        width: 30px;
+      }
+    }
+    img {
+      height: 130px;
+      width: 130px;
+    }
+    &__inn {
+      margin-top: 20px;
+      p {
+        color: #6e6c6a;
+        font-size: 14px;
+      }
+      div {
+        color: #2a2826;
+        font-size: 16px;
+        font-weight: 500;
+        margin-top: 5px;
+      }
+    }
+    &__Name {
+      height: 130px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      p {
+        color: #6e6c6a;
+        font-size: 14px;
+      }
+      div {
+        color: #2a2826;
+        font-size: 16px;
+        font-weight: 500;
+        margin-top: 5px;
+      }
+    }
+    .btnToDetail {
+      width: 90px;
+      height: 30px;
+      background: #576ed0;
+      color: #fffffc;
+      font-size: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 100px;
+      margin-top: 40px;
+      cursor: pointer;
+    }
+  }
+
+  // .blockToView__Right
+
+  &__Right {
+    display: flex;
+    flex-direction: column;
+    width: 50%;
+  }
+}
+.notImage {
+}
+.btnToDetail {
+}
