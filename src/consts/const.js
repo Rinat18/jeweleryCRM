@@ -10,6 +10,7 @@ export const PRODUCT_ACTIONS = {
     GET_PRODUCTS: "GET_PRODUCTS",
     GET_ONE_PRODUCT: "GET_ONE_PRODUCT",
     GET_CATEGORIES: "GET_CATEGORIES",
+    GET_SEARCH: "GET_SEARCH",
 };
 
 export const CLIENTS_ACTIONS = {
@@ -23,7 +24,7 @@ export const token = {
 
 export const CASH_LIST = {
     GET_LIST: "GET_LIST",
-    
+    GET_PAYMENT_TYPES: "GET_PAYMENT_TYPES",
 
 
 }

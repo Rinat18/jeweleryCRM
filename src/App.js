@@ -1,11 +1,10 @@
-import React from 'react'
-import MainRoutes from './routes/MainRoutes'
-
+import React from "react";
+import MainRoutes from "./routes/MainRoutes";
 
 export default function App() {
   return (
     <div>
-      <MainRoutes/>
+      <MainRoutes />
     </div>
-  )
+  );
 }

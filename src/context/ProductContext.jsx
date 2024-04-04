@@ -8,6 +8,7 @@ const INIT_STATE = {
   products: [],
   categories: [],
   oneproduct: {},
+  searchProduct: {},
 };
 
 const reducer = (state = INIT_STATE, action) => {
@@ -18,6 +19,8 @@ const reducer = (state = INIT_STATE, action) => {
       return { ...state, categories: action.payload };
     case PRODUCT_ACTIONS.GET_ONE_PRODUCT:
       return { ...state, oneproduct: action.payload };
+    case PRODUCT_ACTIONS.GET_SEARCH:
+      return { ...state, searchProduct: action.payload };
     default:
       return state;
   }
@@ -104,6 +107,23 @@ export default function ProductContext({ children }) {
     }
   };
 
+  // ! SEARCH PRODUCT
+
+  const searchedProduct = async (code) => {
+    try {
+      const { data } = await axios(
+        `${API}:8000/api/products/search/?barcode=${code}`
+      );
+      dispatch({
+        type: PRODUCT_ACTIONS.GET_SEARCH,
+        payload: data,
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+
   const values = {
     getProducts,
     products: state.products,
@@ -114,6 +134,8 @@ export default function ProductContext({ children }) {
     editProduct,
     deleteProduct,
     oneproduct: state.oneproduct,
+    searchedProduct,
+    searchProduct: state.searchProduct,
   };
   return (
     <productContext.Provider value={values}>{children}</productContext.Provider>

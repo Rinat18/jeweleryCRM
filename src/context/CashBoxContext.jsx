@@ -7,13 +7,15 @@ export const useCash = () => useContext(cashBox);
 
 const INIT_STATE = {
   list: [],
+  paymentTypes: [],
 };
 
 const reducer = (state = INIT_STATE, action) => {
   switch (action.type) {
     case CASH_LIST.GET_LIST:
       return { ...state, list: action.payload };
-
+    case CASH_LIST.GET_PAYMENT_TYPES:
+      return { ...state, paymentTypes: action.payload };
     default:
       return state;
   }
@@ -57,11 +59,23 @@ export default function CashBoxContext({ children }) {
   const getOperationTypes = async () => {};
 
   // ! GET PAYMENT TYPES
-  const getPaymentTypes = async () => {};
+  const getPaymentTypes = async () => {
+    try {
+      const { data } = await axios(`${API}:8000/api/box-office/payment-types/`);
+      dispatch({
+        type: CASH_LIST.GET_PAYMENT_TYPES,
+        payload: data,
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const values = {
     getList,
     list: state.list,
+    paymentTypes: state.paymentTypes,
+    getPaymentTypes,
   };
   return <cashBox.Provider value={values}>{children}</cashBox.Provider>;
 }

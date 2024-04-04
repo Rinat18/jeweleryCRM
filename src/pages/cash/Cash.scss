@@ -59,7 +59,6 @@
       }
 
       div {
-        position: relative;
         input {
           width: 250px;
           height: 40px;
@@ -99,6 +98,7 @@
         border-radius: 20px;
         border: none;
         margin-top: 10px;
+        padding-left: 10px;
       }
     }
 
@@ -110,7 +110,7 @@
       height: 45px;
       background: #6e6c6a;
       border-radius: 100px;
-      margin-left: 50px;
+      margin-left: 20px;
       align-items: center;
     }
   }
@@ -271,4 +271,37 @@
 .notImage {
 }
 .btnToDetail {
+}
+
+/* Стили для контейнера подсказок */
+.react-autosuggest__suggestions-container {
+  background-color: white; /* Цвет фона */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Тень */
+  position: absolute; /* Позиционирование */
+  z-index: 999; /* Индекс слоя */
+  max-height: 200px; /* Максимальная высота */
+  overflow-y: auto; /* Включение вертикальной прокрутки */
+}
+
+/* Стили для каждой отдельной подсказки */
+.react-autosuggest__suggestion {
+  padding: 10px; /* Отступы внутри подсказки */
+  cursor: pointer; /* Курсор при наведении */
+}
+
+/* Стили для активной подсказки */
+.react-autosuggest__suggestion--highlighted {
+  background-color: #f0f0f0; /* Цвет фона при выделении */
+}
+
+.inputProduct {
+  width: 150px;
+  height: 40px;
+  background: #f6f6f6;
+  border-radius: 20px;
+  border: none;
+  margin-top: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }

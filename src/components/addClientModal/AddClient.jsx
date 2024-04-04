@@ -155,6 +155,7 @@ export default function AddClient({ isOpen, closeModal }) {
     console.log(files.length);
   };
   console.log(selectedImage);
+  
 
   return (
     <div>
