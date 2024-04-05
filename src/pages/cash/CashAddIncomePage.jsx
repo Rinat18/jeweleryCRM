@@ -34,7 +34,8 @@ export default function CashAddIncomePage() {
   const [productSeach, setProductSearch] = useState(""); // для поиска товаров
   const [isOpen, setIsOpen] = useState(false); // модалка для добавление клиента
   const [productPrice, setProductPrice] = useState(0); //состояние для инпута суммы
-  const [choosePayment, setChoosePayment] = useState("");
+  const [choosePayment, setChoosePayment] = useState(""); // выбранный способ оплаты
+
 
   // ! CHOOSE MANAGER
 
@@ -105,6 +106,18 @@ export default function CashAddIncomePage() {
     setProductPrice(0);
     setProductSearch("");
   };
+
+  // ! POST INCOME SALE 
+  const submitSale = () => {
+    const formData = new FormData()
+    // formData.append("id" , "")
+    formData.append("operation" , )
+    formData.append("operation_type" , "")
+    formData.append("client" , "")
+    formData.append("manager" , "")
+    formData.append("payment_type" , "")
+    formData.append("products" , "")
+  }
 
   return (
     <div className="HomePage">
@@ -223,8 +236,8 @@ export default function CashAddIncomePage() {
             </div>
 
             <div className="formTotalSum">
-              <div className="formTotalSum_tovars">Количество товаров: 16</div>
-              <div className="formTotalSum_cost">К оплате: 16 350 сом</div>
+              <div className="formTotalSum_tovars">Количество товаров: </div>
+              <div className="formTotalSum_cost">К оплате: {productPrice} сом</div>
             </div>
 
             <div className="btnToSubmit">Подтвердить</div>

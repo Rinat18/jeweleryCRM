@@ -71,11 +71,22 @@ export default function CashBoxContext({ children }) {
     }
   };
 
+  // ! POST INCOME SALE 
+
+  const postIncomeSale = async (form) => {
+    try{
+      await axios.post(`${API}:8000/api/box-office/income/sale/`, form)
+    }catch(error){
+      console.log(error);
+    }
+  }
+
   const values = {
     getList,
     list: state.list,
     paymentTypes: state.paymentTypes,
     getPaymentTypes,
+    postIncomeSale,
   };
   return <cashBox.Provider value={values}>{children}</cashBox.Provider>;
 }
