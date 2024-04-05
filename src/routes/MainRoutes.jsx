@@ -10,6 +10,9 @@ import Client from "../pages/client/Client";
 import DetailClient from "../components/detailClient/DetailClient";
 import CashPage from "../pages/cash/CashPage";
 import CashAddIncomePage from "../pages/cash/CashAddIncomePage";
+import CashAddSale from "../pages/cash/CashAddSale/CashAddSale";
+import InventPage from "../pages/invent/InventPage";
+import MetalPage from "../pages/metal/MetalPage";
 
 export default function MainRoutes() {
   const NOT_AUTH = [
@@ -78,6 +81,31 @@ export default function MainRoutes() {
         </Layout>
       ),
     },
+    {
+      link: "/addSale",
+      element: (
+        <Layout>
+          <CashAddSale />
+        </Layout>
+      ),
+    },
+    {
+      link: "/inventory",
+      element: (
+        <Layout>
+          <InventPage />
+        </Layout>
+      ),
+    },
+    {
+      link: "/metal",
+      element: (
+        <Layout>
+          <MetalPage />
+        </Layout>
+      ),
+    },
+  
   ];
 
   return (

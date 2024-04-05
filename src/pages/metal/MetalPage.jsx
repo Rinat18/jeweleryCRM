@@ -8,28 +8,44 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import Eye from "../../images/eyeBlue.png";
-import { useCash } from "../../context/CashBoxContext";
+import SSearch from "../../images/search-sm.png";
 import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
-import { useNavigate } from "react-router-dom";
+import calendar from "../../images/calendar.png";
+import { useNavigate, useSearchParams } from "react-router-dom";
+import { useProduct } from "../../context/ProductContext";
 
-export default function CashPage() {
-  const { list, getList } = useCash();
-  const [isOpen, setIsopen] = useState(false);
-  const [isOpen2, setIsopen2] = useState(false);
-  const [isOpen3, setIsopen3] = useState(false);
+export default function MetalPage() {
+  const { getMetall, metal } = useProduct();
+
   const [page, setPage] = useState(1);
   const [category, setCategory] = useState("");
   const [limit, setLimit] = useState(4);
-  const [in_stock, setIn_stock] = useState("");
+  const [isOpen3, setIsOpen3] = useState(false);
+  const [word, setWord] = useState("");
+  const [before, setBefore] = useState("");
+  const [after, setAfter] = useState("");
+
+  const [searchParams, setSearchParams] = useSearchParams();
   const [search, setSearch] = useState("");
+
   const navigate = useNavigate();
 
   useEffect(() => {
-    getList(page, limit);
-  }, [page, limit]);
+    setSearchParams({
+      page,
+      limit,
+    });
+    getMetall();
+  }, [page, limit, category, search]);
 
-  console.log(list);
+  // !PAGINATION
+  const count = Math.ceil(metal.count / limit);
+  const handleChange = (e, value) => {
+    setPage(value);
+  };
+
+  // !FUNCTIONS
   const staffs = [1];
   function createData(
     code,
@@ -60,78 +76,60 @@ export default function CashPage() {
   }
   let rows;
 
-  if (list.results) {
-    rows = list.results.map((elem) =>
+  if (metal.results) {
+    rows = metal.results.map((elem) =>
       createData(
-        elem.id ? elem.id : "Без номера",
-        elem.operation.operation_type.name
-          ? elem.operation.operation_type.name
-          : "Без название",
-        elem.created_at ? elem.created_at.slice(0, 10) : "Без даты",
-        elem.operation.name ? elem.operation.name : "Без операции",
-        elem.total_sum ? elem.total_sum : "Без суммы",
-        elem.operation.operation_type.name
-          ? elem.operation.operation_type.name
-          : "Без название",
-        <>Lorem ipsum dolor sit amet consectetur.</>
+        elem.id ? elem.id : "Без ID",
+        elem.cash.created_at ? elem.cash.created_at : "Без даты",
+        elem.sample_number ? elem.sample_number : "Без пробы",
+        elem.total_sum ? elem.total_sum : "Без цены",
+        elem.total_quantity ? elem.total_quantity : "Без название",
+        elem.lost_items ? elem.lost_items : "Без категроии",
+        elem.lost_items ? elem.lost_items : "Без категроии"
       )
     );
   }
 
-  // !PAGINATION
-  const count = Math.ceil(list.count / limit);
-  const handleChange = (e, value) => {
-    setPage(value);
-  };
   return (
-    <div className="HomePage">
-      <div className="HomePage__container">
+    <div className="Staff">
+      <div className="Staff__container">
         <div className="Staff__title">
-          <div className="Staff__title_Text">Касса</div>
-          <div className="Staff__title_btns">
-            {" "}
-            <div
-              onClick={() => navigate("/addIncome")}
-              className="Staff__title_btn"
-            >
-              {" "}
-              <img src={plus} alt="" /> Добавить приход
-            </div>
-            <div
-              onClick={() => navigate("/addSale")}
-              className="Staff__title_btn"
-            >
-              {" "}
-              <img src={plus} alt="" /> Добавить расход
-            </div>
-          </div>
-        </div>
-        <div className="Staff__podTitle">
-          <div className="Staff__podTitle__nal">
-            <div className="Staff__podTitle__nal_text">Наличные</div>
-            <div className="Staff__podTitle__nal_number">100 500 сом</div>
-          </div>
-          <div className="Staff__podTitle__bezNal">
-            <div className="Staff__podTitle__nal_text">Безналичные</div>
-            <div className="Staff__podTitle__nal_number">150 500 сом</div>
-          </div>
+          <div className="Staff__title_Text">Металл</div>
         </div>
         <div className="Staff__filtration">
           <div className="Staff__filtration_select">
-            <select className="Staff__filtration_select_select1" name="" id="">
-              <option value="">Выберите категрию</option>
-            </select>
-            <select
-              onChange={(e) =>
-                e.target.value == "true"
-                  ? setIn_stock(true)
-                  : setIn_stock(false)
-              }
-              className="Staff__filtration_select_select2"
+            <div
+              style={{ cursor: "pointer" }}
+              onClick={() => setIsOpen3(!isOpen3)}
+              className="HomePage__container__statistik__solds__dates__date"
             >
-              <option value="true">В наличии</option>
-              <option value="false">Отсутствует</option>
-            </select>
+              Дата
+              <img src={calendar} alt="" />
+              {isOpen3 ? (
+                <div className="modalHome">
+                  <div className="modal__text">От</div>
+                  <input
+                    className="modal__input"
+                    type="text"
+                    value={word}
+                    onChange={(e) => setWord(e.target.value)}
+                  />
+                  <div className="modal__text">до</div>
+                  <input
+                    className="modal__input"
+                    type="text"
+                    value={before}
+                    onChange={(e) => setBefore(e.target.value)}
+                  />
+                  <button
+                    className="modal__btn"
+                    onClick={() => setIsOpen3(!isOpen3)}
+                  >
+                    Отправить
+                  </button>
+                </div>
+              ) : null}
+            </div>
           </div>
         </div>
         <div className="Staff__table">
@@ -148,7 +146,7 @@ export default function CashPage() {
                     }}
                     align="center"
                   >
-                    № операции
+                    ID
                   </TableCell>
                   <TableCell
                     sx={{
@@ -159,7 +157,7 @@ export default function CashPage() {
                     }}
                     align="center"
                   >
-                    Тип операции
+                    Дата
                   </TableCell>
                   <TableCell
                     sx={{
@@ -170,7 +168,7 @@ export default function CashPage() {
                     }}
                     align="center"
                   >
-                    Дата{" "}
+                    Проба{" "}
                   </TableCell>
                   <TableCell
                     sx={{
@@ -181,7 +179,7 @@ export default function CashPage() {
                     }}
                     align="center"
                   >
-                    Операция
+                    Сумма
                   </TableCell>
                   <TableCell
                     sx={{
@@ -192,7 +190,7 @@ export default function CashPage() {
                     }}
                     align="center"
                   >
-                    Сумма{" "}
+                    Вес{" "}
                   </TableCell>
                   <TableCell
                     sx={{
@@ -203,7 +201,7 @@ export default function CashPage() {
                     }}
                     align="center"
                   >
-                    Оплата
+                    Менеджер
                   </TableCell>
                   <TableCell
                     sx={{
@@ -214,7 +212,7 @@ export default function CashPage() {
                     }}
                     align="center"
                   >
-                    Примечание
+                    Фото{" "}
                   </TableCell>
                 </TableRow>
               </TableHead>
@@ -305,11 +303,7 @@ export default function CashPage() {
               </TableBody>
             </Table>
           </TableContainer>
-          {rows ? (
-            rows.length == 0 ? (
-              <div className="rowsNOTdata">Нет данных</div>
-            ) : null
-          ) : null}
+          {!rows ? <div className="rowsNOTdata">Нет данных</div> : null}
         </div>
         <div className="Staff__pagination">
           <div className="Staff__pagination_paginations">

@@ -9,6 +9,8 @@ const INIT_STATE = {
   categories: [],
   oneproduct: {},
   searchProduct: {},
+  invent: [],
+  metal: [],
 };
 
 const reducer = (state = INIT_STATE, action) => {
@@ -21,6 +23,10 @@ const reducer = (state = INIT_STATE, action) => {
       return { ...state, oneproduct: action.payload };
     case PRODUCT_ACTIONS.GET_SEARCH:
       return { ...state, searchProduct: action.payload };
+    case PRODUCT_ACTIONS.GET_INVENT:
+      return { ...state, invent: action.payload };
+    case PRODUCT_ACTIONS.GET_METAL:
+      return { ...state, metal: action.payload };
     default:
       return state;
   }
@@ -48,6 +54,19 @@ export default function ProductContext({ children }) {
     }
   };
 
+  const getInvent = async () => {
+    try {
+      const { data } = await axios(
+        `${API}:8000/api/inventory-check/${window.location.search}`
+      );
+      dispatch({
+        type: PRODUCT_ACTIONS.GET_INVENT,
+        payload: data,
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
   // ! GET CATEGORIES
 
   const getCategories = async () => {
@@ -123,6 +142,22 @@ export default function ProductContext({ children }) {
     }
   };
 
+  const getMetall = async () => {
+    try {
+      const { data } = await axios(
+        `${API}:8000/api/metals/${window.location.search}`
+      );
+      console.log(data);
+      dispatch({
+        type: PRODUCT_ACTIONS.GET_METAL,
+        payload: data,
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+
 
   const values = {
     getProducts,
@@ -136,6 +171,10 @@ export default function ProductContext({ children }) {
     oneproduct: state.oneproduct,
     searchedProduct,
     searchProduct: state.searchProduct,
+    getInvent,
+    invent: state.invent,
+    getMetall,
+    metal: state.metal,
   };
   return (
     <productContext.Provider value={values}>{children}</productContext.Provider>

@@ -1,19 +1,19 @@
 import React, { useEffect, useState } from "react";
-import plus from "../../images/plus.png";
-import "./Cash.scss";
-import SSearch from "../../images/search-sm.png";
+import plus from "../../../images/plus.png";
+import "../Cash.scss";
+import SSearch from "../../../images/search-sm.png";
 import DeleteIcon from "@mui/icons-material/Delete";
-import img from "../../images/photo library.png";
+import img from "../../../images/photo library.png";
 import AddIcon from "@mui/icons-material/Add";
 import Autosuggest from "react-autosuggest";
-import { useClient } from "../../context/ClientContext";
 import { useNavigate } from "react-router-dom";
-import AddClient from "../../components/addClientModal/AddClient";
-import { useStaff } from "../../context/StaffContext";
-import { useProduct } from "../../context/ProductContext";
-import { useCash } from "../../context/CashBoxContext";
+import AddClient from "../../../components/addClientModal/AddClient";
+import { useClient } from "../../../context/ClientContext";
+import { useStaff } from "../../../context/StaffContext";
+import { useProduct } from "../../../context/ProductContext";
+import { useCash } from "../../../context/CashBoxContext";
 
-export default function CashAddIncomePage() {
+export default function CashAddSale() {
   const { getClients, clients } = useClient();
   const { getStaffs, staffs } = useStaff();
   const { searchedProduct, searchProduct } = useProduct();
@@ -117,7 +117,7 @@ export default function CashAddIncomePage() {
     formData.append("products[0]product", searchProduct.id);
     formData.append("products[0]price", +productPrice);
     postIncomeSale(formData);
-    navigate(-1)
+    navigate(-1);
   };
 
   console.log(searchProduct.id);
@@ -126,44 +126,29 @@ export default function CashAddIncomePage() {
   console.log(+productPrice);
   console.log(selectedClient?.id);
 
-  // 42751953594905091
   return (
     <div className="HomePage">
       <div className="HomePage__container">
         <div className="Staff__title">
-          <div className="Staff__title_Text">Добавить приход</div>
+          <div className="Staff__title_Text">Добавить расход</div>
         </div>
         <div className="forms">
           <div className="formToAddIncomee">
             <div className="formToAddIncome">
               <div className="formToAddIncome__types">
                 <div className="formToAddIncome__types_sell formToAddIncome__types_Active ">
-                  Продажа
+                  Выкуп
                 </div>
-                <div className="formToAddIncome__types_installment">
-                  Рассрочка
-                </div>
-                <div className="formToAddIncome__types_pay">Выплата</div>
-                <div className="formToAddIncome__types_exchange">Обмен</div>
+                <div className="formToAddIncome__types_installment">Аванс</div>
+                <div className="formToAddIncome__types_pay">Другое</div>
+                <div className="formToAddIncome__types_exchange">Зарплата</div>
               </div>
 
               <div className="formToAddIncome__clientInputs">
-                <div className="formToAddIncome__clientInputs__client">
-                  <p>Клиент</p>
-                  <div style={{ position: "relative" }}>
-                    <img src={SSearch} alt="" />
-                    <Autosuggest
-                      suggestions={suggestions}
-                      onSuggestionsFetchRequested={onSuggestionsFetchRequested}
-                      onSuggestionsClearRequested={onSuggestionsClearRequested}
-                      getSuggestionValue={(suggestion) => suggestion.full_name}
-                      renderSuggestion={renderSuggestion}
-                      inputProps={inputProps}
-                      onSuggestionSelected={onSuggestionSelected} // Добавляем обработчик выбора опции
-                    />
-                  </div>
-                </div>
-                <div className="formToAddIncome__clientInputs__manager">
+                <div
+                  className="formToAddIncome__clientInputs__manager"
+                  style={{ marginLeft: 0 }}
+                >
                   <p>Менеджер*</p>
                   <select
                     value={chooseManager}
@@ -179,25 +164,25 @@ export default function CashAddIncomePage() {
                       : null}
                   </select>
                 </div>
+                <div className="formToAddIncome__clientInputs__manager">
+                  <p>Сумма*</p>
+                  <input
+                    value={productPrice}
+                    onChange={(e) => setProductPrice(e.target.value)}
+                    type="number"
+                  />
+                </div>
               </div>
 
-              <div
-                onClick={() => setIsOpen(true)}
-                className="Staff__title_btn formToAddIncome__addClient"
-              >
-                {" "}
-                <img src={plus} alt="" /> Добавить клиента
-              </div>
               <div className="formToAddIncome__clientInputs">
                 <div className="formToAddIncome__clientInputs__client">
-                  <p>Товар*</p>
+                  <p>Проба*</p>
                   <div>
-                    <img src={SSearch} alt="" />
                     <input
                       style={{ paddingLeft: "10px" }}
                       value={productSeach}
                       onChange={(e) => setProductSearch(e.target.value)}
-                      type="text"
+                      type="number"
                     />
                   </div>
                 </div>
@@ -206,17 +191,16 @@ export default function CashAddIncomePage() {
                   className="formToAddIncome__clientInputs__client"
                 >
                   <p>Товар*</p>
-                  <div className="inputProduct">{searchProduct.title}</div>
+                  <div>
+                    <input
+                      style={{ paddingLeft: "10px" }}
+                      value={productSeach}
+                      onChange={(e) => setProductSearch(e.target.value)}
+                      type="number"
+                    />
+                  </div>{" "}
                 </div>
-                <div className="formToAddIncome__clientInputs__manager">
-                  <p>Сумма*</p>
-                  <input
-                    value={productPrice}
 
-                    onChange={(e) => setProductPrice(e.target.value)}
-                    type="number"
-                  />
-                </div>
                 <div className="formToAddIncome__clientInputs_delete">
                   <DeleteIcon
                     onClick={() => clearChoosedProduct()}

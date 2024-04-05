@@ -28,7 +28,7 @@ export default function SideBar() {
             <img src={Tovari} className="" />
             <div className="sideBar__container__text__sites__text">Товары</div>
           </div>
-          <div className="sideBar__container__text__sites">
+          <div onClick={() => navigate("/metal")} className="sideBar__container__text__sites">
             <img src={Metals} className="" />
             <div className="sideBar__container__text__sites__text">Металл</div>
           </div>
@@ -54,7 +54,7 @@ export default function SideBar() {
               Должники
             </div>
           </div>
-          <div className="sideBar__container__text__sites">
+          <div onClick={() => navigate("/inventory")} className="sideBar__container__text__sites">
             <img src={Inventory} className="" />
             <div className="sideBar__container__text__sites__text">
               Инвентаризация

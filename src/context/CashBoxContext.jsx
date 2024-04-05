@@ -81,6 +81,7 @@ export default function CashBoxContext({ children }) {
     }
   }
 
+  
   const values = {
     getList,
     list: state.list,
