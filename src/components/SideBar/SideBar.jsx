@@ -64,11 +64,11 @@ export default function SideBar() {
             <img src={Cash} className="" />
             <div className="sideBar__container__text__sites__text">Касса</div>
           </div>
-          <div className="sideBar__container__text__sites">
+          <div onClick={() => navigate("/intallment")} className="sideBar__container__text__sites">
             <img src={Expenses} className="" />
-            <div className="sideBar__container__text__sites__text">Расходы</div>
+            <div className="sideBar__container__text__sites__text">Рассрочка</div>
           </div>
-          <div className="sideBar__container__text__sites">
+          <div onClick={() => navigate("/salary")} className="sideBar__container__text__sites">
             <img src={Salary} className="" />
             <div className="sideBar__container__text__sites__text">
               Зарплата

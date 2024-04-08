@@ -11,6 +11,7 @@ const INIT_STATE = {
   searchProduct: {},
   invent: [],
   metal: [],
+  salary: [],
 };
 
 const reducer = (state = INIT_STATE, action) => {
@@ -27,6 +28,8 @@ const reducer = (state = INIT_STATE, action) => {
       return { ...state, invent: action.payload };
     case PRODUCT_ACTIONS.GET_METAL:
       return { ...state, metal: action.payload };
+    case PRODUCT_ACTIONS.GET_SALARY:
+      return { ...state, salary: action.payload };
     default:
       return state;
   }
@@ -157,8 +160,27 @@ export default function ProductContext({ children }) {
     }
   };
 
+  const getInstallments = async () => {
+    try {
+    } catch {}
+  };
 
+  // ! SALARY
 
+  const getSalary = async () => {
+    try {
+      const { data } = await axios(
+        `${API}:8000/api/salary/${window.location.search}`
+      );
+      console.log(data);
+      dispatch({
+        type: PRODUCT_ACTIONS.GET_SALARY,
+        payload: data,
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
   const values = {
     getProducts,
     products: state.products,
@@ -175,6 +197,8 @@ export default function ProductContext({ children }) {
     invent: state.invent,
     getMetall,
     metal: state.metal,
+    getSalary,
+    salary: state.salary,
   };
   return (
     <productContext.Provider value={values}>{children}</productContext.Provider>

@@ -13,6 +13,8 @@ import CashAddIncomePage from "../pages/cash/CashAddIncomePage";
 import CashAddSale from "../pages/cash/CashAddSale/CashAddSale";
 import InventPage from "../pages/invent/InventPage";
 import MetalPage from "../pages/metal/MetalPage";
+import InstallMentPage from "../pages/installment/InstallMentPage";
+import SalaryPage from "../pages/salary/SalaryPage";
 
 export default function MainRoutes() {
   const NOT_AUTH = [
@@ -105,7 +107,22 @@ export default function MainRoutes() {
         </Layout>
       ),
     },
-  
+    {
+      link: "/intallment",
+      element: (
+        <Layout>
+          <InstallMentPage />
+        </Layout>
+      ),
+    },
+    {
+      link: "/salary",
+      element: (
+        <Layout>
+          <SalaryPage />
+        </Layout>
+      ),
+    },
   ];
 
   return (

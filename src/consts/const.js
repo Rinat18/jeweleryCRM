@@ -13,6 +13,7 @@ export const PRODUCT_ACTIONS = {
     GET_SEARCH: "GET_SEARCH",
     GET_INVENT: "GET_INVENT",
     GET_METAL: "GET_METAL",
+    GET_SALARY: "GET_SALARY",
 };
 
 export const CLIENTS_ACTIONS = {

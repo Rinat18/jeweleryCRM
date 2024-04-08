@@ -11,36 +11,53 @@ import Eye from "../../images/eyeBlue.png";
 import SSearch from "../../images/search-sm.png";
 import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
-import calendar from "../../images/calendar.png";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import "../staff/Staff.scss";
 import { useProduct } from "../../context/ProductContext";
+import AddProductModal from "../../components/addProductModal/AddProductModal";
+import { useNavigate, useSearchParams } from "react-router-dom";
+import ModalForItem from "../../components/ModalImageItem/ModalImageItem";
+import { TextField } from "@mui/material";
+import calendar from "../../images/calendar.png";
 
-export default function MetalPage() {
-  const { getMetall, metal } = useProduct();
+export default function InstallMentPage() {
+  const { products, getProducts, getCategories, categories } = useProduct();
+  
 
+  // ! HOOKS
   const [page, setPage] = useState(1);
   const [category, setCategory] = useState("");
   const [limit, setLimit] = useState(4);
+  const [in_stock, setIn_stock] = useState("");
+  const [isOpen, setIsopen] = useState(false);
+
+  const [isOpen2, setIsopen2] = useState(false);
   const [isOpen3, setIsOpen3] = useState(false);
-  const [word, setWord] = useState("");
-  const [before, setBefore] = useState("");
-  const [after, setAfter] = useState("");
 
   const [searchParams, setSearchParams] = useSearchParams();
   const [search, setSearch] = useState("");
+
+  const [word, setWord] = useState("");
+  const [before, setBefore] = useState("");
+  const [after, setAfter] = useState("");
 
   const navigate = useNavigate();
 
   useEffect(() => {
     setSearchParams({
+      search,
+      category,
+      in_stock,
       page,
       limit,
     });
-    getMetall();
-  }, [page, limit, category, search]);
+  }, [page, limit, category, in_stock, search]);
 
+  useEffect(() => {
+    getProducts();
+    getCategories();
+  }, [page, limit, category, in_stock, search]);
   // !PAGINATION
-  const count = Math.ceil(metal.count / limit);
+  const count = Math.ceil(products.count / limit);
   const handleChange = (e, value) => {
     setPage(value);
   };
@@ -76,27 +93,36 @@ export default function MetalPage() {
   }
   let rows;
 
-  if (metal.results) {
-    rows = metal.results.map((elem) =>
+  if (products.results) {
+    rows = products.results.map((elem) =>
       createData(
-        elem.id ? elem.id : "Без ID",
-        elem.cash.created_at ? elem.cash.created_at : "Без даты",
+        elem.barcode ? elem.barcode : "Без баркода",
+        elem.title ? elem.title : "Без название",
+        elem.category.name ? elem.category.name : "Без категроии",
         elem.sample_number ? elem.sample_number : "Без пробы",
-        elem.cash.total_sum ? elem.cash.total_sum : "Без цены",
-        elem.weight ? elem.weight : "Без название",
-        elem.cash.manager.full_name
-          ? elem.cash.manager.full_name
-          : "Без категроии",
-        elem.images ? elem.images : "Без фотографии"
+        elem.images ? elem.images : "Без фотографии",
+        elem.weight ? elem.weight : "Без весса",
+        elem.size ? elem.size : "Без размера",
+        elem.cost_price ? elem.cost_price : "0",
+        elem.used ? "б/у" : "новый",
       )
     );
   }
 
+  const getOnePage = (id) => {
+    navigate(`/detail/${id}`);
+  };
+
+  const closeModal = () => {
+    setIsopen(false);
+  };
+
+  console.log(rows);
   return (
     <div className="Staff">
       <div className="Staff__container">
         <div className="Staff__title">
-          <div className="Staff__title_Text">Металл</div>
+          <div className="Staff__title_Text">Рассрочки</div>
         </div>
         <div className="Staff__filtration">
           <div className="Staff__filtration_select">
@@ -133,6 +159,19 @@ export default function MetalPage() {
               ) : null}
             </div>
           </div>
+          <div className="Staff__filtration__input">
+            <img
+              src={SSearch}
+              className="Staff__filtration__input_img"
+              alt=""
+            />
+            <input
+              type="text"
+              placeholder="Поиск"
+              onChange={(e) => setSearch(e.target.value)}
+              className="Staff__filtration__input_input"
+            />
+          </div>
         </div>
         <div className="Staff__table">
           <TableContainer component={Paper}>
@@ -148,7 +187,7 @@ export default function MetalPage() {
                     }}
                     align="center"
                   >
-                    ID
+                    Номер рассрочки
                   </TableCell>
                   <TableCell
                     sx={{
@@ -159,7 +198,7 @@ export default function MetalPage() {
                     }}
                     align="center"
                   >
-                    Дата
+                    Клиент
                   </TableCell>
                   <TableCell
                     sx={{
@@ -170,7 +209,7 @@ export default function MetalPage() {
                     }}
                     align="center"
                   >
-                    Проба{" "}
+                    Адрес
                   </TableCell>
                   <TableCell
                     sx={{
@@ -181,7 +220,7 @@ export default function MetalPage() {
                     }}
                     align="center"
                   >
-                    Сумма
+                    Номер телефона
                   </TableCell>
                   <TableCell
                     sx={{
@@ -192,7 +231,7 @@ export default function MetalPage() {
                     }}
                     align="center"
                   >
-                    Вес{" "}
+                    Примечание{" "}
                   </TableCell>
                   <TableCell
                     sx={{
@@ -203,7 +242,7 @@ export default function MetalPage() {
                     }}
                     align="center"
                   >
-                    Менеджер
+                    Дата получения
                   </TableCell>
                   <TableCell
                     sx={{
@@ -214,7 +253,29 @@ export default function MetalPage() {
                     }}
                     align="center"
                   >
-                    Фото{" "}
+                    Дата окончания{" "}
+                  </TableCell>
+                  <TableCell
+                    sx={{
+                      borderRight: "1px solid white",
+                      color: "white",
+                      fontFamily: "Manrope",
+                      fontWeight: 700,
+                    }}
+                    align="center"
+                  >
+                    Общая сумма долга
+                  </TableCell>
+                  <TableCell
+                    sx={{
+                      borderRight: "1px solid white",
+                      color: "white",
+                      fontFamily: "Manrope",
+                      fontWeight: 700,
+                    }}
+                    align="center"
+                  >
+                    Остаток
                   </TableCell>
                 </TableRow>
               </TableHead>
@@ -277,7 +338,17 @@ export default function MetalPage() {
                           }}
                           align="center"
                         >
-                          {row.images}
+                          {/* {row.images.map((e) => (
+                        <></>
+                      ))} */}
+
+                          {row.images[0] ? (
+                            <img
+                              onClick={() => setIsopen2(true)}
+                              style={{ width: "50px" }}
+                              src={row.images[0].image}
+                            />
+                          ) : null}
                         </TableCell>
                         <TableCell
                           sx={{
@@ -297,13 +368,27 @@ export default function MetalPage() {
                           }}
                           align="center"
                         >
-                          {row.images[0] ? (
-                            <img
-                              style={{ width: "50px" }}
-                              src={row.images[0].image}
-                            />
-                          ) : "Без фотографии"}
-                          
+                          {row.size}
+                        </TableCell>
+                        <TableCell
+                          sx={{
+                            fontFamily: "Manrope",
+                            fontSize: "14px",
+                            fontWeight: 500,
+                          }}
+                          align="center"
+                        >
+                          {row.cost}
+                        </TableCell>
+                        <TableCell
+                          sx={{
+                            fontFamily: "Manrope",
+                            fontSize: "14px",
+                            fontWeight: 500,
+                          }}
+                          align="center"
+                        >
+                          {row.used}
                         </TableCell>
                       </TableRow>
                     ))
@@ -311,7 +396,11 @@ export default function MetalPage() {
               </TableBody>
             </Table>
           </TableContainer>
-          {!rows ? <div className="rowsNOTdata">Нет данных</div> : null}
+          {rows ? (
+            rows.length == 0 ? (
+              <div className="rowsNOTdata">Нет данных</div>
+            ) : null
+          ) : null}
         </div>
         <div className="Staff__pagination">
           <div className="Staff__pagination_paginations">
@@ -337,6 +426,9 @@ export default function MetalPage() {
             </div>
           </div>
         </div>
+        {isOpen ? (
+          <AddProductModal isOpen={isOpen} closeModal={closeModal} />
+        ) : null}
       </div>
     </div>
   );

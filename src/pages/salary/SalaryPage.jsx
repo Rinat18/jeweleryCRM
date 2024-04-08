@@ -11,23 +11,31 @@ import Eye from "../../images/eyeBlue.png";
 import SSearch from "../../images/search-sm.png";
 import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
-import calendar from "../../images/calendar.png";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import "../staff/Staff.scss";
 import { useProduct } from "../../context/ProductContext";
+import AddProductModal from "../../components/addProductModal/AddProductModal";
+import { useNavigate, useSearchParams } from "react-router-dom";
+import ModalForItem from "../../components/ModalImageItem/ModalImageItem";
+import { TextField } from "@mui/material";
+import calendar from "../../images/calendar.png";
+import ModeOutlinedIcon from "@mui/icons-material/ModeOutlined";
+import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined";
 
-export default function MetalPage() {
-  const { getMetall, metal } = useProduct();
+export default function SalaryPage() {
+  const { salary, getSalary, getCategories, categories } = useProduct();
 
+  // ! HOOKS
   const [page, setPage] = useState(1);
-  const [category, setCategory] = useState("");
   const [limit, setLimit] = useState(4);
+  const [isOpen, setIsopen] = useState(false);
+
+  const [isOpen2, setIsopen2] = useState(false);
   const [isOpen3, setIsOpen3] = useState(false);
-  const [word, setWord] = useState("");
-  const [before, setBefore] = useState("");
-  const [after, setAfter] = useState("");
 
   const [searchParams, setSearchParams] = useSearchParams();
-  const [search, setSearch] = useState("");
+
+  const [word, setWord] = useState("");
+  const [before, setBefore] = useState("");
 
   const navigate = useNavigate();
 
@@ -36,67 +44,73 @@ export default function MetalPage() {
       page,
       limit,
     });
-    getMetall();
-  }, [page, limit, category, search]);
+  }, [page, limit, ]);
 
+  useEffect(() => {
+    getSalary();
+    getCategories();
+  }, [page, limit ]);
   // !PAGINATION
-  const count = Math.ceil(metal.count / limit);
+  const count = Math.ceil(salary.count / limit);
   const handleChange = (e, value) => {
     setPage(value);
   };
 
   // !FUNCTIONS
   const staffs = [1];
-  function createData(
-    code,
-    title,
-    category,
-    proba,
-    images,
-    weight,
-    size,
-    cost,
-    used,
-    nalichii,
-    action
-  ) {
+  function createData(code, title, category, proba) {
     return {
       code,
       title,
       category,
       proba,
-      images,
-      weight,
-      size,
-      cost,
-      used,
-      nalichii,
-      action,
     };
   }
   let rows;
 
-  if (metal.results) {
-    rows = metal.results.map((elem) =>
+  if (salary.results) {
+    rows = salary.results.map((elem) =>
       createData(
-        elem.id ? elem.id : "Без ID",
-        elem.cash.created_at ? elem.cash.created_at : "Без даты",
-        elem.sample_number ? elem.sample_number : "Без пробы",
-        elem.cash.total_sum ? elem.cash.total_sum : "Без цены",
-        elem.weight ? elem.weight : "Без название",
-        elem.cash.manager.full_name
-          ? elem.cash.manager.full_name
-          : "Без категроии",
-        elem.images ? elem.images : "Без фотографии"
+        elem.id ? elem.id : "Без баркода",
+        elem.date_start ? elem.date_start : "Без название",
+        elem.date_end ? elem.date_end : "Без категроии",
+        <>
+          <img
+            src={Eye}
+            style={{ cursor: "pointer" }}
+            onClick={() => getOnePage(elem.id)}
+            alt=""
+          />
+
+          <ModeOutlinedIcon sx={{color:"#576ED0", marginLeft:"5px"}} />
+
+          <DeleteOutlinedIcon sx={{color:"#576ED0"}}/>
+        </>
       )
     );
   }
 
+  const getOnePage = (id) => {
+    navigate(`/detail/${id}`);
+  };
+
+  const closeModal = () => {
+    setIsopen(false);
+  };
+
+  console.log(rows);
   return (
     <div className="Staff">
       <div className="Staff__container">
         <div className="Staff__title">
-          <div className="Staff__title_Text">Металл</div>
+          <div className="Staff__title_Text">Зарплатная ведомость</div>
+          <div
+            style={{ width: "350px" }}
+            onClick={() => setIsopen(true)}
+            className="Staff__title_btn"
+          >
+            <img src={plus} alt="" /> Добавить зарплатную ведомость
+          </div>
         </div>
         <div className="Staff__filtration">
           <div className="Staff__filtration_select">
@@ -159,7 +173,7 @@ export default function MetalPage() {
                     }}
                     align="center"
                   >
-                    Дата
+                    Дата от
                   </TableCell>
                   <TableCell
                     sx={{
@@ -170,7 +184,7 @@ export default function MetalPage() {
                     }}
                     align="center"
                   >
-                    Проба{" "}
+                    Дата до
                   </TableCell>
                   <TableCell
                     sx={{
@@ -181,40 +195,7 @@ export default function MetalPage() {
                     }}
                     align="center"
                   >
-                    Сумма
-                  </TableCell>
-                  <TableCell
-                    sx={{
-                      borderRight: "1px solid white",
-                      color: "white",
-                      fontFamily: "Manrope",
-                      fontWeight: 700,
-                    }}
-                    align="center"
-                  >
-                    Вес{" "}
-                  </TableCell>
-                  <TableCell
-                    sx={{
-                      borderRight: "1px solid white",
-                      color: "white",
-                      fontFamily: "Manrope",
-                      fontWeight: 700,
-                    }}
-                    align="center"
-                  >
-                    Менеджер
-                  </TableCell>
-                  <TableCell
-                    sx={{
-                      borderRight: "1px solid white",
-                      color: "white",
-                      fontFamily: "Manrope",
-                      fontWeight: 700,
-                    }}
-                    align="center"
-                  >
-                    Фото{" "}
+                    Действия
                   </TableCell>
                 </TableRow>
               </TableHead>
@@ -269,49 +250,17 @@ export default function MetalPage() {
                         >
                           {row.proba}
                         </TableCell>
-                        <TableCell
-                          sx={{
-                            fontFamily: "Manrope",
-                            fontSize: "14px",
-                            fontWeight: 500,
-                          }}
-                          align="center"
-                        >
-                          {row.images}
-                        </TableCell>
-                        <TableCell
-                          sx={{
-                            fontFamily: "Manrope",
-                            fontSize: "14px",
-                            fontWeight: 500,
-                          }}
-                          align="center"
-                        >
-                          {row.weight}
-                        </TableCell>
-                        <TableCell
-                          sx={{
-                            fontFamily: "Manrope",
-                            fontSize: "14px",
-                            fontWeight: 500,
-                          }}
-                          align="center"
-                        >
-                          {row.images[0] ? (
-                            <img
-                              style={{ width: "50px" }}
-                              src={row.images[0].image}
-                            />
-                          ) : "Без фотографии"}
-                          
-                        </TableCell>
                       </TableRow>
                     ))
                   : null}
               </TableBody>
             </Table>
           </TableContainer>
-          {!rows ? <div className="rowsNOTdata">Нет данных</div> : null}
+          {rows ? (
+            rows.length == 0 ? (
+              <div className="rowsNOTdata">Нет данных</div>
+            ) : null
+          ) : null}
         </div>
         <div className="Staff__pagination">
           <div className="Staff__pagination_paginations">
@@ -337,6 +286,9 @@ export default function MetalPage() {
             </div>
           </div>
         </div>
+        {isOpen ? (
+          <AddProductModal isOpen={isOpen} closeModal={closeModal} />
+        ) : null}
       </div>
     </div>
   );
